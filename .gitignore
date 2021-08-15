@@ -20,3 +20,11 @@ supervisord.pid
 # barryvdh/laravel-ide-helper
 _ide_helper_models.php
 _ide_helper.php
+
+# laravel-mix output
+public/css
+public/fonts
+public/js
+public/mix-manifest.json
+public/views
+public/vendors~views

@@ -16,7 +16,7 @@
       // currently we have to manually map the modules
       // "@user/*": ["modules/User/Resources/js/*"]
     },
-    "types": ["@types/node", "vite/client"]
+    "types": ["@types/node", "webpack-env"]
   },
   "include": [
     "resources/js/**/*.ts",
