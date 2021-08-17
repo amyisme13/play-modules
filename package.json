@@ -16,6 +16,7 @@
     "@commitlint/config-conventional": "^13.1.0",
     "@prettier/plugin-php": "^0.17.3",
     "@types/node": "^16.6.1",
+    "@types/nprogress": "^0.2.0",
     "@types/webpack-env": "^1.16.2",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
@@ -40,6 +41,9 @@
     "vuetifyjs-mix-extension": "^0.0.20"
   },
   "dependencies": {
+    "@mdi/js": "^5.9.55",
+    "axios": "^0.21.1",
+    "nprogress": "^0.2.0",
     "vue": "^2.6.14",
     "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2",

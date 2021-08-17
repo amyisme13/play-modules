@@ -9,13 +9,23 @@
   <title>Laravel</title>
 
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
 </head>
 
 <body class="font-sans antialiased">
   <div id="app"></div>
+
+  @auth
+  <script>
+    localStorage.setItem('authenticated', '1');
+  </script>
+  @else
+  <script>
+    localStorage.removeItem('authenticated');
+  </script>
+  @endauth
 
   <script src="{{ asset(mix('js/app.js')) }}"></script>
 </body>

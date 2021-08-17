@@ -1,0 +1,29 @@
+import AppLayout from '@/layouts/AppLayout.vue';
+import type { AppFeature } from '@/types/feature';
+
+const feature: AppFeature = {
+  name: '$STUDLY_NAME$',
+  routes: [
+    {
+      path: '/$LOWER_NAME$',
+      component: AppLayout,
+      redirect: { name: '$LOWER_NAME$-index' },
+      children: [
+        {
+          path: '/',
+          name: '$LOWER_NAME$-index',
+          component: () => import(/* webpackChunkName: "views/$LOWER_NAME$/index" */ './views/Index.vue'),
+        },
+      ],
+    },
+  ],
+  menus: [
+    {
+      label: '$STUDLY_NAME$',
+      icon: 'mdi-view-dashboard',
+      routeName: '$LOWER_NAME$-index',
+    },
+  ],
+};
+
+export default feature;
