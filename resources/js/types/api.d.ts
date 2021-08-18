@@ -45,6 +45,13 @@ export interface TwoFactorDTO {
   recovery_code?: string;
 }
 
+export interface ResetPasswordDTO {
+  email: string;
+  token: string;
+  password: string;
+  password_confirmation: string;
+}
+
 export interface RegisterDTO {
   name: string;
   email: string;

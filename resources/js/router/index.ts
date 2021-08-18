@@ -6,8 +6,10 @@ import { configure } from './configure-router';
 
 import AppLayout from '@/layouts/AppLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
+import ForgotPassword from '@/views/Auth/ForgotPassword.vue';
 import Login from '@/views/Auth/Login.vue';
 import Register from '@/views/Auth/Register.vue';
+import ResetPassword from '@/views/Auth/ResetPassword.vue';
 import TwoFactorChallenge from '@/views/Auth/TwoFactorChallenge.vue';
 import Account from '@/views/Account/Index.vue';
 import Home from '@/views/Home.vue';
@@ -21,7 +23,7 @@ const routes: RouteConfig[] = [
     redirect: 'login',
     children: [
       {
-        path: '/login',
+        path: 'login',
         name: 'login',
         component: Login,
         meta: {
@@ -29,7 +31,7 @@ const routes: RouteConfig[] = [
         },
       },
       {
-        path: '/register',
+        path: 'register',
         name: 'register',
         component: Register,
         meta: {
@@ -37,9 +39,25 @@ const routes: RouteConfig[] = [
         },
       },
       {
-        path: '/2fa',
+        path: '2fa',
         name: '2fa-challenge',
         component: TwoFactorChallenge,
+        meta: {
+          requireGuest: true,
+        },
+      },
+      {
+        path: 'forgot',
+        name: 'forgot-password',
+        component: ForgotPassword,
+        meta: {
+          requireGuest: true,
+        },
+      },
+      {
+        path: 'reset',
+        name: 'reset-password',
+        component: ResetPassword,
         meta: {
           requireGuest: true,
         },
@@ -52,7 +70,7 @@ const routes: RouteConfig[] = [
     redirect: 'home',
     children: [
       {
-        path: '/home',
+        path: 'home',
         name: 'home',
         component: Home,
         meta: {
@@ -60,7 +78,7 @@ const routes: RouteConfig[] = [
         },
       },
       {
-        path: '/account',
+        path: 'account',
         name: 'account-settings',
         component: Account,
         meta: {

@@ -1,6 +1,7 @@
 import {
   LoginDTO,
   RegisterDTO,
+  ResetPasswordDTO,
   TwoFactorDTO,
   UpdatePasswordDTO,
   UpdateProfileDTO,
@@ -60,3 +61,12 @@ export const regenerate2FARecoveryCodes = () =>
 
 export const login2FA = (credentials: TwoFactorDTO) =>
   req.post(`${config.appUrl}/two-factor-challenge`, credentials);
+
+/**
+ * Reset Password
+ */
+export const requestReset = (email: string) =>
+  req.post(`${config.appUrl}/forgot-password`, { email });
+
+export const resetPassword = (newCredentials: ResetPasswordDTO) =>
+  req.post(`${config.appUrl}/reset-password`, newCredentials);

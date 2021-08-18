@@ -13,4 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::view('/auth/reset', 'app')->name('password.reset');
+
 Route::fallback(fn() => view('app'));
