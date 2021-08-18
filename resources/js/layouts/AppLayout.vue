@@ -93,6 +93,10 @@ export default class AppLayout extends Vue {
     return this.$vuetify.breakpoint.smAndDown;
   }
 
+  mounted() {
+    this.$nextTick(() => (this.drawer = !this.isMobile));
+  }
+
   async logout() {
     this.loggingOut = true;
 

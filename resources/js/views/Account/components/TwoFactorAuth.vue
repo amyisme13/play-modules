@@ -32,16 +32,27 @@
         </v-sheet>
       </div>
 
-      <div class="d-flex align-center">
-        <v-btn v-if="recoveryCodes.length === 0" :loading="loadingCodes" @click="showRecoveryCodes">
+      <div class="d-flex align-center flex-column flex-md-row">
+        <v-btn
+          v-if="recoveryCodes.length === 0"
+          :block="isMobile"
+          :loading="loadingCodes"
+          @click="showRecoveryCodes"
+        >
           Show Recovery Codes
         </v-btn>
 
-        <v-btn v-else :loading="loadingCodes" @click="regenerateRecoveryCodes">
+        <v-btn v-else :block="isMobile" :loading="loadingCodes" @click="regenerateRecoveryCodes">
           Regenerate Recovery Codes
         </v-btn>
 
-        <v-btn class="ml-4" color="secondary" :loading="loading" @click="disable2FA">
+        <v-btn
+          :block="isMobile"
+          class="mt-2 mt-md-0 ml-md-4"
+          color="secondary"
+          :loading="loading"
+          @click="disable2FA"
+        >
           Disable 2FA
         </v-btn>
       </div>
@@ -94,6 +105,10 @@ export default class TwoFactorAuth extends Vue {
 
   get user() {
     return AuthModule.user;
+  }
+
+  get isMobile() {
+    return this.$vuetify.breakpoint.smAndDown;
   }
 
   async confirmPassword() {
