@@ -1,12 +1,12 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
 
-import { csrf, login, logout, user, register } from '@/api/auth';
+import { csrf, login, logout, user, register, login2FA } from '@/api/auth';
 import { resetRouter } from '@/router';
 import store from '@/store';
-import { LoginDTO, RegisterDTO, User } from '@/types/api';
+import { LoginDTO, RegisterDTO, TwoFactorDTO, User } from '@/types/api';
 import { getAuthenticated, setAuthenticated } from '@/utils/auth';
 
-@Module({ dynamic: true, store, name: 'user' })
+@Module({ dynamic: true, store, name: 'auth' })
 class Auth extends VuexModule {
   authenticated = getAuthenticated();
   user: User | null = null;
@@ -32,7 +32,20 @@ class Auth extends VuexModule {
   @Action
   async login(credentials: LoginDTO) {
     await csrf();
-    await login(credentials);
+    const { data } = await login(credentials);
+
+    if (data?.two_factor) {
+      return false;
+    }
+
+    this.SET_AUTHENTICATED(true);
+    setAuthenticated(true);
+    return true;
+  }
+
+  @Action
+  async login2FA(credentials: TwoFactorDTO) {
+    await login2FA(credentials);
 
     this.SET_AUTHENTICATED(true);
     setAuthenticated(true);

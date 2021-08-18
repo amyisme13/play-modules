@@ -8,12 +8,16 @@
           </v-toolbar>
 
           <v-card-text>
+            <v-alert v-if="formErrors.code" dense type="error">
+              {{ formErrors.code[0] }}
+            </v-alert>
+
             <v-form>
               <v-text-field
                 dense
                 outlined
                 required
-                :error-messages="formErrors.email || []"
+                :error-messages="formErrors.email"
                 label="Email"
                 name="email"
                 prepend-inner-icon="mdi-email"
@@ -25,7 +29,7 @@
                 dense
                 outlined
                 required
-                :error-messages="formErrors.password || []"
+                :error-messages="formErrors.password"
                 label="Password"
                 name="password"
                 prepend-inner-icon="mdi-lock"
@@ -56,7 +60,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 import { AuthModule } from '@/store/auth';
-import { LaravelError } from '@/types/api';
+import { ErrorModule } from '@/store/error';
 
 @Component
 export default class Login extends Vue {
@@ -66,14 +70,8 @@ export default class Login extends Vue {
   password = '';
   remember = false;
 
-  error: LaravelError | null = null;
-
   get formErrors() {
-    if (this.error && this.error.errors) {
-      return this.error.errors;
-    }
-
-    return {};
+    return ErrorModule.formErrors;
   }
 
   get redirectTo() {
@@ -92,17 +90,22 @@ export default class Login extends Vue {
     this.loading = true;
 
     try {
-      await AuthModule.login({
+      const result = await AuthModule.login({
         email: this.email,
         password: this.password,
         remember: this.remember,
       });
 
-      this.redirectUser();
-    } catch (err) {
-      if (err && err.response) {
-        this.error = err.response.data;
+      if (result) {
+        this.redirectUser();
+      } else {
+        this.$router.push({
+          name: '2fa-challenge',
+          query: { redirectTo: this.redirectTo },
+        });
       }
+    } catch (err) {
+      //
     }
 
     this.loading = false;

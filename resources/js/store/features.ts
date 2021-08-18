@@ -4,7 +4,7 @@ import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-dec
 import store from '@/store';
 import { AppFeature, AppMenu } from '@/types/feature';
 
-@Module({ dynamic: true, store, name: 'modules' })
+@Module({ dynamic: true, store, name: 'features' })
 class Features extends VuexModule {
   loaded = false;
   features: AppFeature[] = [];

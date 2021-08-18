@@ -13,7 +13,7 @@
                 dense
                 outlined
                 required
-                :error-messages="formErrors.name || []"
+                :error-messages="formErrors.name"
                 label="Name"
                 name="name"
                 prepend-inner-icon="mdi-account"
@@ -25,7 +25,7 @@
                 dense
                 outlined
                 required
-                :error-messages="formErrors.email || []"
+                :error-messages="formErrors.email"
                 label="Email"
                 name="email"
                 prepend-inner-icon="mdi-email"
@@ -37,7 +37,7 @@
                 dense
                 outlined
                 required
-                :error-messages="formErrors.password || []"
+                :error-messages="formErrors.password"
                 label="Password"
                 name="password"
                 prepend-inner-icon="mdi-lock"
@@ -49,7 +49,7 @@
                 dense
                 outlined
                 required
-                :error-messages="formErrors.password_confirmation || []"
+                :error-messages="formErrors.password_confirmation"
                 label="Confirm Password"
                 name="password_confirmation"
                 prepend-inner-icon="mdi-lock-check"
@@ -81,6 +81,7 @@ import { Vue, Component } from 'vue-property-decorator';
 
 import { AuthModule } from '@/store/auth';
 import { LaravelError } from '@/types/api';
+import { ErrorModule } from '@/store/error';
 
 @Component
 export default class Register extends Vue {
@@ -91,14 +92,8 @@ export default class Register extends Vue {
   password = '';
   confirm = '';
 
-  error: LaravelError | null = null;
-
   get formErrors() {
-    if (this.error && this.error.errors) {
-      return this.error.errors;
-    }
-
-    return {};
+    return ErrorModule.formErrors;
   }
 
   get redirectTo() {
@@ -126,9 +121,7 @@ export default class Register extends Vue {
 
       this.redirectUser();
     } catch (err) {
-      if (err && err.response) {
-        this.error = err.response.data;
-      }
+      //
     }
 
     this.loading = false;

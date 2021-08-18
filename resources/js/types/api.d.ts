@@ -31,6 +31,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
+  two_factor_secret: string;
 }
 
 export interface LoginDTO {
@@ -39,9 +40,25 @@ export interface LoginDTO {
   remember: boolean;
 }
 
+export interface TwoFactorDTO {
+  code?: string;
+  recovery_code?: string;
+}
+
 export interface RegisterDTO {
   name: string;
   email: string;
   password: string;
   password_confirmation: string;
+}
+
+export interface UpdatePasswordDTO {
+  current_password: string;
+  password: string;
+  password_confirmation: string;
+}
+
+export interface UpdateProfileDTO {
+  name: string;
+  email: string;
 }

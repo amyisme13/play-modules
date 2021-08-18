@@ -4,6 +4,7 @@ import Router, { Route } from 'vue-router';
 
 import { FeaturesModule } from '@/store/features';
 import { AuthModule } from '@/store/auth';
+import { ErrorModule } from '@/store/error';
 
 NProgress.configure({ showSpinner: false });
 
@@ -40,5 +41,9 @@ export const configure = (router: Router) => {
 
   router.afterEach((_: Route) => {
     NProgress.done();
+
+    if (!ErrorModule.dontReset) {
+      ErrorModule.RESET();
+    }
   });
 };

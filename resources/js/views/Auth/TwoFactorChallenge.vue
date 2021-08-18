@@ -1,0 +1,122 @@
+<template>
+  <v-container fluid class="fill-height">
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="8" md="4">
+        <v-card>
+          <v-card-text>
+            <div v-if="recovery">
+              <p>
+                Please confirm access to your account by entering one of your emergency recovery
+                codes.
+              </p>
+
+              <v-text-field
+                dense
+                outlined
+                :error-messages="formErrors.code"
+                label="Recovery Code"
+                name="recovery_code"
+                prepend-inner-icon="mdi-history"
+                type="text"
+                v-model="recoveryCode"
+              />
+            </div>
+
+            <div v-else>
+              <p>
+                Please confirm access to your account by entering the authentication code provided
+                by your authenticator application.
+              </p>
+
+              <v-text-field
+                dense
+                outlined
+                :error-messages="formErrors.code"
+                label="Code"
+                name="code"
+                prepend-inner-icon="mdi-lock"
+                type="text"
+                v-model="code"
+              />
+            </div>
+
+            <div class="d-flex align-center flex-wrap">
+              <v-btn class="white--text" color="primary" @click="login" :loading="loading">
+                Login
+              </v-btn>
+
+              <v-btn v-if="recovery" class="ml-4" @click="toggleRecovery">Use 2FA Code</v-btn>
+              <v-btn v-else class="ml-4" @click="toggleRecovery">Use Recovery Code</v-btn>
+            </div>
+
+            <div class="mt-4">
+              <router-link class="u-hover" :to="{ name: 'login', query: { redirectTo } }">
+                Switch Account
+              </router-link>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
+
+import { AuthModule } from '@/store/auth';
+import { ErrorModule } from '@/store/error';
+
+@Component
+export default class TwoFactorChallenge extends Vue {
+  loading = false;
+  recovery = false;
+
+  code = '';
+  recoveryCode = '';
+
+  get formErrors() {
+    return ErrorModule.formErrors;
+  }
+
+  get redirectTo() {
+    return this.$route.query.redirectTo as string | null;
+  }
+
+  redirectUser() {
+    if (this.redirectTo) {
+      this.$router.push(this.redirectTo);
+    } else {
+      this.$router.push({ name: 'home' });
+    }
+  }
+
+  toggleRecovery() {
+    this.recovery = !this.recovery;
+    if (this.recovery) {
+      this.code = '';
+    } else {
+      this.recoveryCode = '';
+    }
+  }
+
+  async login() {
+    this.loading = true;
+
+    try {
+      await AuthModule.login2FA({
+        code: this.recovery ? '' : this.code,
+        recovery_code: this.recovery ? this.recoveryCode : '',
+      });
+
+      this.redirectUser();
+    } catch (err) {
+      ErrorModule.SET_DONT_RESET(true);
+      this.$router.push({ name: 'login', query: { redirectTo: this.redirectTo } });
+      this.$nextTick(() => ErrorModule.SET_DONT_RESET(false));
+    }
+
+    this.loading = false;
+  }
+}
+</script>

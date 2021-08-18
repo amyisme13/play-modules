@@ -8,6 +8,8 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import Login from '@/views/Auth/Login.vue';
 import Register from '@/views/Auth/Register.vue';
+import TwoFactorChallenge from '@/views/Auth/TwoFactorChallenge.vue';
+import Account from '@/views/Account/Index.vue';
 import Home from '@/views/Home.vue';
 
 Vue.use(Router);
@@ -34,6 +36,14 @@ const routes: RouteConfig[] = [
           requireGuest: true,
         },
       },
+      {
+        path: '/2fa',
+        name: '2fa-challenge',
+        component: TwoFactorChallenge,
+        meta: {
+          requireGuest: true,
+        },
+      },
     ],
   },
   {
@@ -45,6 +55,14 @@ const routes: RouteConfig[] = [
         path: '/home',
         name: 'home',
         component: Home,
+        meta: {
+          requireAuth: true,
+        },
+      },
+      {
+        path: '/account',
+        name: 'account-settings',
+        component: Account,
         meta: {
           requireAuth: true,
         },
