@@ -65,9 +65,7 @@
                 Register
               </v-btn>
 
-              <router-link class="ml-4 u-hover" :to="{ name: 'login', query: { redirectTo } }">
-                or Login
-              </router-link>
+              <router-link class="ml-4 u-hover" :to="{ name: 'login' }"> or Login </router-link>
             </div>
           </v-card-text>
         </v-card>
@@ -80,7 +78,6 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 import { AuthModule } from '@/store/auth';
-import { LaravelError } from '@/types/api';
 import { ErrorModule } from '@/store/error';
 
 @Component
@@ -96,18 +93,6 @@ export default class Register extends Vue {
     return ErrorModule.formErrors;
   }
 
-  get redirectTo() {
-    return this.$route.query.redirectTo as string | null;
-  }
-
-  redirectUser() {
-    if (this.redirectTo) {
-      this.$router.push(this.redirectTo);
-    } else {
-      this.$router.push({ name: 'home' });
-    }
-  }
-
   async register() {
     this.loading = true;
 
@@ -119,7 +104,7 @@ export default class Register extends Vue {
         password_confirmation: this.confirm,
       });
 
-      this.redirectUser();
+      this.$router.push({ name: 'home' });
     } catch (err) {
       //
     }

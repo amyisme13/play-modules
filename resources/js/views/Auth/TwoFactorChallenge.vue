@@ -50,9 +50,7 @@
             </div>
 
             <div class="mt-4">
-              <router-link class="u-hover" :to="{ name: 'login', query: { redirectTo } }">
-                Switch Account
-              </router-link>
+              <router-link class="u-hover" :to="{ name: 'login' }"> Switch Account </router-link>
             </div>
           </v-card-text>
         </v-card>
@@ -79,18 +77,6 @@ export default class TwoFactorChallenge extends Vue {
     return ErrorModule.formErrors;
   }
 
-  get redirectTo() {
-    return this.$route.query.redirectTo as string | null;
-  }
-
-  redirectUser() {
-    if (this.redirectTo) {
-      this.$router.push(this.redirectTo);
-    } else {
-      this.$router.push({ name: 'home' });
-    }
-  }
-
   toggleRecovery() {
     this.recovery = !this.recovery;
     if (this.recovery) {
@@ -109,10 +95,10 @@ export default class TwoFactorChallenge extends Vue {
         recovery_code: this.recovery ? this.recoveryCode : '',
       });
 
-      this.redirectUser();
+      this.$router.push({ name: 'home' });
     } catch (err) {
       ErrorModule.SET_DONT_RESET(true);
-      this.$router.push({ name: 'login', query: { redirectTo: this.redirectTo } });
+      this.$router.push({ name: 'login' });
       this.$nextTick(() => ErrorModule.SET_DONT_RESET(false));
     }
 

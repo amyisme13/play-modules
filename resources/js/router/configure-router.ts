@@ -9,13 +9,24 @@ import { ErrorModule } from '@/store/error';
 NProgress.configure({ showSpinner: false });
 
 export const configure = (router: Router) => {
-  router.beforeEach(async (to: Route, _: Route, next: any) => {
+  router.beforeEach(async (to: Route, from: Route, next: any) => {
     NProgress.start();
 
     const { authenticated } = AuthModule;
+    const shouldRedirectTo = from.query.redirectTo;
 
     if (!authenticated && to.meta?.requireAuth) {
       next({ name: 'login', query: { redirectTo: to.fullPath } });
+      return;
+    }
+
+    if (!authenticated && shouldRedirectTo && !to.query.redirectTo) {
+      next({ ...to, query: { redirectTo: shouldRedirectTo } });
+      return;
+    }
+
+    if (authenticated && shouldRedirectTo && shouldRedirectTo !== to.fullPath) {
+      next(shouldRedirectTo);
       return;
     }
 

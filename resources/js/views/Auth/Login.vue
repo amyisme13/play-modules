@@ -45,7 +45,7 @@
                 Login
               </v-btn>
 
-              <router-link class="ml-4 u-hover" :to="{ name: 'register', query: { redirectTo } }">
+              <router-link class="ml-4 u-hover" :to="{ name: 'register' }">
                 or Register
               </router-link>
             </div>
@@ -74,18 +74,6 @@ export default class Login extends Vue {
     return ErrorModule.formErrors;
   }
 
-  get redirectTo() {
-    return this.$route.query.redirectTo as string | null;
-  }
-
-  redirectUser() {
-    if (this.redirectTo) {
-      this.$router.push(this.redirectTo);
-    } else {
-      this.$router.push({ name: 'home' });
-    }
-  }
-
   async login() {
     this.loading = true;
 
@@ -97,12 +85,9 @@ export default class Login extends Vue {
       });
 
       if (result) {
-        this.redirectUser();
+        this.$router.push({ name: 'home' });
       } else {
-        this.$router.push({
-          name: '2fa-challenge',
-          query: { redirectTo: this.redirectTo },
-        });
+        this.$router.push({ name: '2fa-challenge' });
       }
     } catch (err) {
       //
