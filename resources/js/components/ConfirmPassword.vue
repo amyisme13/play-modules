@@ -18,10 +18,8 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-spacer></v-spacer>
-
-        <v-btn outlined @click="cancel">Cancel</v-btn>
         <v-btn color="primary" @click="confirm">Confirm</v-btn>
+        <v-btn outlined class="mr-2" @click="cancel">Cancel</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

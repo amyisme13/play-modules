@@ -50,19 +50,19 @@
                 v-model="confirm"
               />
             </v-form>
-
-            <div class="d-flex align-center">
-              <v-btn
-                class="white--text"
-                color="primary"
-                :disabled="success"
-                :loading="loading"
-                @click="reset"
-              >
-                Reset Password
-              </v-btn>
-            </div>
           </v-card-text>
+
+          <v-card-actions>
+            <v-btn
+              class="white--text"
+              color="primary"
+              :disabled="success"
+              :loading="loading"
+              @click="reset"
+            >
+              Reset Password
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>

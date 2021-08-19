@@ -39,20 +39,17 @@
                 v-model="code"
               />
             </div>
-
-            <div class="d-flex align-center flex-wrap">
-              <v-btn class="white--text" color="primary" @click="login" :loading="loading">
-                Login
-              </v-btn>
-
-              <v-btn v-if="recovery" class="ml-4" @click="toggleRecovery">Use 2FA Code</v-btn>
-              <v-btn v-else class="ml-4" @click="toggleRecovery">Use Recovery Code</v-btn>
-            </div>
-
-            <div class="mt-4">
-              <router-link class="u-hover" :to="{ name: 'login' }"> Switch Account </router-link>
-            </div>
           </v-card-text>
+
+          <v-card-actions>
+            <v-btn class="white--text ml-2" color="primary" @click="login" :loading="loading">
+              Login
+            </v-btn>
+
+            <v-btn v-if="recovery" text @click="toggleRecovery"> Use 2FA Code </v-btn>
+
+            <v-btn v-else text @click="toggleRecovery"> Use Recovery Code </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>

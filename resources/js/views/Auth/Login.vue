@@ -37,25 +37,26 @@
                 v-model="password"
               />
 
-              <v-checkbox class="mt-0 pt-0" label="Remember Me" v-model="remember" />
+              <v-checkbox hide-details class="mt-0 pt-0" label="Remember Me" v-model="remember" />
             </v-form>
 
-            <div class="d-flex align-center">
-              <v-btn class="white--text" color="primary" @click="login" :loading="loading">
-                Login
-              </v-btn>
-
-              <router-link class="ml-4 u-hover" :to="{ name: 'register' }">
-                or Register
-              </router-link>
-
-              <div class="flex-grow-1 text-right">
-                <router-link class="u-hover" :to="{ name: 'forgot-password' }">
-                  Forgot your password?
-                </router-link>
-              </div>
-            </div>
+            <div class="d-flex align-center"></div>
           </v-card-text>
+
+          <v-card-actions>
+            <v-btn class="white--text" color="primary" @click="login" :loading="loading">
+              Login
+            </v-btn>
+
+            <v-btn text class="mr-2" :to="{ name: 'register' }"> Register </v-btn>
+
+            <router-link
+              class="ml-2 flex-grow-1 text-caption u-hover"
+              :to="{ name: 'forgot-password' }"
+            >
+              Forgot your password?
+            </router-link>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>

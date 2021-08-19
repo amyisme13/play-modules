@@ -57,17 +57,17 @@
                 v-model="confirm"
               />
 
-              <v-checkbox class="mt-0 pt-0" label="I agree to TOS & PP" />
+              <v-checkbox hide-details class="mt-0 pt-0" label="I agree to TOS & PP" />
             </v-form>
-
-            <div class="d-flex align-center">
-              <v-btn class="white--text" color="primary" @click="register" :loading="loading">
-                Register
-              </v-btn>
-
-              <router-link class="ml-4 u-hover" :to="{ name: 'login' }"> or Login </router-link>
-            </div>
           </v-card-text>
+
+          <v-card-actions>
+            <v-btn class="white--text" color="primary" @click="register" :loading="loading">
+              Register
+            </v-btn>
+
+            <v-btn text class="mr-2" :to="{ name: 'login' }">Login</v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>

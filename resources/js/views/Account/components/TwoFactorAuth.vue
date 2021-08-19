@@ -31,10 +31,26 @@
           </div>
         </v-sheet>
       </div>
+    </v-card-text>
 
-      <div class="d-flex align-center flex-column flex-md-row">
+    <v-card-text v-else>
+      <p class="grey--text text--darken-3">You have not enabled two factor authentication.</p>
+      <p>
+        When two factor authentication is enabled, you will be prompted for a secure, random token
+        during authentication. You may retrieve this token from your phone's Google Authenticator
+        application.
+      </p>
+    </v-card-text>
+
+    <v-card-actions>
+      <v-sheet
+        v-if="user && user.two_factor_secret"
+        class="d-flex align-center flex-column flex-md-row"
+        :width="isMobile ? '100%' : undefined"
+      >
         <v-btn
           v-if="recoveryCodes.length === 0"
+          outlined
           :block="isMobile"
           :loading="loadingCodes"
           @click="showRecoveryCodes"
@@ -42,7 +58,13 @@
           Show Recovery Codes
         </v-btn>
 
-        <v-btn v-else :block="isMobile" :loading="loadingCodes" @click="regenerateRecoveryCodes">
+        <v-btn
+          v-else
+          outlined
+          :block="isMobile"
+          :loading="loadingCodes"
+          @click="regenerateRecoveryCodes"
+        >
           Regenerate Recovery Codes
         </v-btn>
 
@@ -55,19 +77,10 @@
         >
           Disable 2FA
         </v-btn>
-      </div>
-    </v-card-text>
+      </v-sheet>
 
-    <v-card-text v-else>
-      <p class="grey--text text--darken-3">You have not enabled two factor authentication.</p>
-      <p>
-        When two factor authentication is enabled, you will be prompted for a secure, random token
-        during authentication. You may retrieve this token from your phone's Google Authenticator
-        application.
-      </p>
-
-      <v-btn color="primary" :loading="loading" @click="enable2FA">Enable 2FA</v-btn>
-    </v-card-text>
+      <v-btn v-else color="primary" :loading="loading" @click="enable2FA">Enable 2FA</v-btn>
+    </v-card-actions>
 
     <confirm-password ref="confirm" />
   </v-card>

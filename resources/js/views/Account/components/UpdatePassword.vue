@@ -37,9 +37,11 @@
           v-model="confirm"
         />
       </v-form>
-
-      <v-btn color="primary" :loading="loading" @click="submit">Submit</v-btn>
     </v-card-text>
+
+    <v-card-actions>
+      <v-btn color="primary" :loading="loading" @click="submit">Submit</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
