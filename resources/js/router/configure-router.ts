@@ -5,6 +5,7 @@ import Router, { Route } from 'vue-router';
 import { FeaturesModule } from '@/store/features';
 import { AuthModule } from '@/store/auth';
 import { ErrorModule } from '@/store/error';
+import { errorRoutes } from '.';
 
 NProgress.configure({ showSpinner: false });
 
@@ -14,6 +15,19 @@ export const configure = (router: Router) => {
 
     const { authenticated } = AuthModule;
     const shouldRedirectTo = from.query.redirectTo;
+
+    if (authenticated && !AuthModule.user) {
+      await AuthModule.loadUser();
+    }
+
+    if (!FeaturesModule.loaded) {
+      FeaturesModule.fetchFeatures();
+      router.addRoutes(FeaturesModule.routes);
+      router.addRoutes(errorRoutes);
+
+      next({ ...to, replace: true });
+      return;
+    }
 
     if (!authenticated && to.meta?.requireAuth) {
       next({ name: 'login', query: { redirectTo: to.fullPath } });
@@ -32,18 +46,6 @@ export const configure = (router: Router) => {
 
     if (authenticated && to.meta?.requireGuest) {
       next({ name: 'home' });
-      return;
-    }
-
-    if (authenticated && !AuthModule.user) {
-      await AuthModule.loadUser();
-    }
-
-    if (!FeaturesModule.loaded) {
-      FeaturesModule.fetchFeatures();
-      router.addRoutes(FeaturesModule.routes);
-
-      next({ ...to, replace: true });
       return;
     }
 

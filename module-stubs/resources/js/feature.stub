@@ -12,7 +12,7 @@ const feature: AppFeature = {
         {
           path: '/',
           name: '$LOWER_NAME$-index',
-          component: () => import(/* webpackChunkName: "views/$LOWER_NAME$/index" */ './views/Index.vue'),
+          component: () => import(/* webpackChunkName: "views/$LOWER_NAME$/index" */ '../views/Index.vue'),
         },
       ],
     },

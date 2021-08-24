@@ -1,7 +1,6 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
 
 import { csrf, login, logout, user, register, login2FA } from '@/api/auth';
-import { resetRouter } from '@/router';
 import store from '@/store';
 import { LoginDTO, RegisterDTO, TwoFactorDTO, User } from '@/types/api';
 import { getAuthenticated, setAuthenticated } from '@/utils/auth';
@@ -23,7 +22,6 @@ class Auth extends VuexModule {
 
   @Action
   resetAuth() {
-    resetRouter();
     this.SET_USER(null);
     this.SET_AUTHENTICATED(false);
     setAuthenticated(false);

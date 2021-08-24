@@ -31,7 +31,9 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  two_factor_secret: string;
+  two_factor_enabled: boolean;
+  permissions: string[];
+  roles: string[];
 }
 
 export interface LoginDTO {
@@ -68,4 +70,19 @@ export interface UpdatePasswordDTO {
 export interface UpdateProfileDTO {
   name: string;
   email: string;
+}
+
+/**
+ * Permissions
+ */
+
+export interface Permission {
+  id: number;
+  name: string;
+}
+
+export interface Role {
+  id: number;
+  name: string;
+  permissions: string[];
 }

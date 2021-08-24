@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title>Two Factor Auth</v-card-title>
 
-    <v-card-text v-if="user && user.two_factor_secret">
+    <v-card-text v-if="user && user.two_factor_enabled">
       <p class="grey--text text--darken-3">You have enabled two factor authentication.</p>
       <p>
         When two factor authentication is enabled, you will be prompted for a secure, random token
@@ -44,7 +44,7 @@
 
     <v-card-actions>
       <v-sheet
-        v-if="user && user.two_factor_secret"
+        v-if="user && user.two_factor_enabled"
         class="d-flex align-center flex-column flex-md-row"
         :width="isMobile ? '100%' : undefined"
       >

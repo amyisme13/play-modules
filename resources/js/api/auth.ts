@@ -10,7 +10,7 @@ import {
 import config from '@/utils/config';
 import req from '@/utils/request';
 
-// Sanctum, login & logout url is not located in api namespace
+// Sanctum & Fortify url are not located in api namespace
 export const csrf = () => req.get(`${config.appUrl}/sanctum/csrf-cookie`);
 
 /**

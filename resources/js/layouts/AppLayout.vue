@@ -32,16 +32,6 @@
 
     <v-navigation-drawer app clipped v-model="drawer">
       <v-list>
-        <v-list-item to="/home">
-          <v-list-item-icon>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
         <v-list-item v-for="menu in menus" :key="menu.routeName" :to="{ name: menu.routeName }">
           <v-list-item-icon>
             <v-icon>{{ menu.icon }}</v-icon>

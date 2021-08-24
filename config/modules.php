@@ -32,7 +32,7 @@ return [
             'scaffold/config' => 'Config/config.php',
             'composer' => 'composer.json',
             'resources/js/views/Index' => 'Resources/js/views/Index.vue',
-            'resources/js/feature' => 'Resources/js/feature.ts',
+            'resources/js/feature' => 'Resources/js/feature/index.ts',
         ],
         'replacements' => [
             'routes/web' => [],

@@ -45,7 +45,7 @@ class Error extends VuexModule {
     this.SET_ERROR(error.error);
     this.SET_STATUS(error.status);
 
-    const snackbarStatuses = [429, 500];
+    const snackbarStatuses = [403, 429, 500];
     if (snackbarStatuses.includes(error.status)) {
       eventHub.$emit('add', error.error.message, 'error');
     }
