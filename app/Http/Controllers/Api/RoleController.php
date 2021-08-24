@@ -67,7 +67,7 @@ class RoleController extends Controller
 
         $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('roles')->ignore($role->id)],
-            'permissions' => ['required', 'array'],
+            'permissions' => ['present', 'array'],
             'permissions.*' => ['string', Rule::exists('permissions', 'name')],
         ]);
 
