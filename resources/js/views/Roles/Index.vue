@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <h1 class="mb-4 text-h4">Role Management</h1>
 
     <v-row>

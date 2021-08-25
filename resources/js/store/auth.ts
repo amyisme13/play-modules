@@ -4,6 +4,7 @@ import { csrf, login, logout, user, register, login2FA } from '@/api/auth';
 import store from '@/store';
 import { LoginDTO, RegisterDTO, TwoFactorDTO, User } from '@/types/api';
 import { getAuthenticated, setAuthenticated } from '@/utils/auth';
+import { FeaturesModule } from './features';
 
 @Module({ dynamic: true, store, name: 'auth' })
 class Auth extends VuexModule {
@@ -18,6 +19,8 @@ class Auth extends VuexModule {
   @Mutation
   SET_USER(user: User | null) {
     this.user = user;
+
+    FeaturesModule.filterMenus();
   }
 
   @Action

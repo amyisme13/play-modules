@@ -47,6 +47,11 @@ class Features extends VuexModule {
     this.menus = filterMenus(this.menus);
   }
 
+  @Mutation
+  SET_MENUS(menus: AppMenu[]) {
+    this.menus = menus;
+  }
+
   @Action
   fetchFeatures() {
     const req = require.context('../../../modules/', true, /js\/feature\/index.ts$/);
@@ -54,6 +59,16 @@ class Features extends VuexModule {
 
     this.SET_FEATURES(features);
     this.SET_LOADED();
+  }
+
+  @Action
+  filterMenus() {
+    const menus = this.features.reduce(
+      (acc, feature) => acc.concat(feature.menus),
+      [] as AppMenu[]
+    );
+
+    this.SET_MENUS(filterMenus(menus));
   }
 }
 
