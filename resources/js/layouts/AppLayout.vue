@@ -32,15 +32,39 @@
 
     <v-navigation-drawer app clipped v-model="drawer">
       <v-list>
-        <v-list-item v-for="menu in menus" :key="menu.routeName" :to="{ name: menu.routeName }">
-          <v-list-item-icon>
-            <v-icon>{{ menu.icon }}</v-icon>
-          </v-list-item-icon>
+        <template v-for="(menu, i) in menus">
+          <v-list-item
+            v-if="'routeName' in menu"
+            :key="menu.routeName"
+            :to="{ name: menu.routeName }"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ menu.icon }}</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
             <v-list-item-title>{{ menu.label }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          </v-list-item>
+
+          <v-list-group v-else :key="i" :prepend-icon="menu.icon">
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>{{ menu.label }}</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item
+              v-for="item in menu.menus"
+              :key="item.routeName"
+              :to="{ name: item.routeName }"
+            >
+              <v-list-item-icon class="ml-4">
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>{{ item.label }}</v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+        </template>
       </v-list>
     </v-navigation-drawer>
 

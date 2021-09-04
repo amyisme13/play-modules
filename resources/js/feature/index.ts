@@ -1,8 +1,9 @@
-import { AppFeature } from '@/types/feature';
+import { AppFeature } from '@/types';
 import routes from './routes';
 
 const feature: AppFeature = {
-  name: 'core',
+  name: 'Core',
+  icon: 'mdi-atom',
   routes,
   menus: [
     {

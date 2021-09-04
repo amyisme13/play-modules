@@ -15,17 +15,7 @@
 </head>
 
 <body class="font-sans antialiased">
-  <div id="app"></div>
-
-  @auth
-  <script>
-    localStorage.setItem('authenticated', '1');
-  </script>
-  @else
-  <script>
-    localStorage.removeItem('authenticated');
-  </script>
-  @endauth
+  @vueApp
 
   <script src="{{ asset(mix('js/app.js')) }}"></script>
 </body>

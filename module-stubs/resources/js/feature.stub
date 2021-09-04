@@ -1,8 +1,9 @@
 import AppLayout from '@/layouts/AppLayout.vue';
-import type { AppFeature } from '@/types/feature';
+import type { AppFeature } from '@/types';
 
 const feature: AppFeature = {
   name: '$STUDLY_NAME$',
+  icon: 'mdi-view-dashboard',
   routes: [
     {
       path: '/$LOWER_NAME$',
@@ -19,7 +20,7 @@ const feature: AppFeature = {
   ],
   menus: [
     {
-      label: '$STUDLY_NAME$',
+      label: 'Index $STUDLY_NAME$',
       icon: 'mdi-view-dashboard',
       routeName: '$LOWER_NAME$-index',
     },

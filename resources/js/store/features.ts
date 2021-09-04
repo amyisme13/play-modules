@@ -3,9 +3,10 @@ import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-dec
 
 import coreFeature from '@/feature';
 import store from '@/store';
-import { AppFeature, AppMenu } from '@/types/feature';
-
+import { AppFeature, AppMenu, AppMenuHeader } from '@/types';
 import { AuthModule } from './auth';
+
+type Menus = (AppMenu | AppMenuHeader)[];
 
 function filterMenus(menus: AppMenu[]) {
   if (AuthModule.user?.roles.includes('Super Admin')) {
@@ -26,9 +27,12 @@ function filterMenus(menus: AppMenu[]) {
 @Module({ dynamic: true, store, name: 'features' })
 class Features extends VuexModule {
   loaded = false;
+
+  active: string[] = [];
+
   features: AppFeature[] = [];
   routes: RouteConfig[] = [];
-  menus: AppMenu[] = [];
+  menus: Menus = [];
 
   @Mutation
   SET_LOADED() {
@@ -36,39 +40,59 @@ class Features extends VuexModule {
   }
 
   @Mutation
-  SET_FEATURES(features: AppFeature[]) {
-    this.features = features;
-
-    features.forEach((feature) => {
-      this.routes.push(...feature.routes);
-      this.menus.push(...feature.menus);
-    });
-
-    this.menus = filterMenus(this.menus);
+  SET_ACTIVE(active: string[]) {
+    this.active = active;
   }
 
   @Mutation
-  SET_MENUS(menus: AppMenu[]) {
+  SET_FEATURES(features: AppFeature[]) {
+    this.features = features;
+  }
+
+  @Mutation
+  SET_ROUTES(routes: RouteConfig[]) {
+    this.routes = routes;
+  }
+
+  @Mutation
+  SET_MENUS(menus: Menus) {
     this.menus = menus;
   }
 
   @Action
   fetchFeatures() {
     const req = require.context('../../../modules/', true, /js\/feature\/index.ts$/);
-    const features = [coreFeature, ...req.keys().map((key) => req(key).default)];
+    const nonCoreFeatures: AppFeature[] = req.keys().map((key) => req(key).default);
+    const activeFeatures = nonCoreFeatures.filter((feat) => this.active.includes(feat.name));
+
+    const features = [coreFeature, ...activeFeatures];
+
+    const routes = features.reduce(
+      (acc, feature) => acc.concat(feature.routes),
+      [] as RouteConfig[]
+    );
 
     this.SET_FEATURES(features);
+    this.SET_ROUTES(routes);
+    this.loadMenus();
+
     this.SET_LOADED();
   }
 
   @Action
-  filterMenus() {
-    const menus = this.features.reduce(
-      (acc, feature) => acc.concat(feature.menus),
-      [] as AppMenu[]
-    );
+  loadMenus() {
+    const menus = this.features.reduce((acc, feature) => {
+      const filtered = filterMenus(feature.menus);
 
-    this.SET_MENUS(filterMenus(menus));
+      if (feature.name === 'Core') {
+        return acc.concat(filtered);
+      }
+
+      acc.push({ label: feature.name, icon: feature.icon, menus: filtered });
+      return acc;
+    }, [] as Menus);
+
+    this.SET_MENUS(menus);
   }
 }
 

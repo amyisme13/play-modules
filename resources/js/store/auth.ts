@@ -3,12 +3,11 @@ import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-dec
 import { csrf, login, logout, user, register, login2FA } from '@/api/auth';
 import store from '@/store';
 import { LoginDTO, RegisterDTO, TwoFactorDTO, User } from '@/types/api';
-import { getAuthenticated, setAuthenticated } from '@/utils/auth';
 import { FeaturesModule } from './features';
 
 @Module({ dynamic: true, store, name: 'auth' })
 class Auth extends VuexModule {
-  authenticated = getAuthenticated();
+  authenticated = false;
   user: User | null = null;
 
   @Mutation
@@ -20,14 +19,13 @@ class Auth extends VuexModule {
   SET_USER(user: User | null) {
     this.user = user;
 
-    FeaturesModule.filterMenus();
+    FeaturesModule.loadMenus();
   }
 
   @Action
   resetAuth() {
     this.SET_USER(null);
     this.SET_AUTHENTICATED(false);
-    setAuthenticated(false);
   }
 
   @Action
@@ -40,7 +38,6 @@ class Auth extends VuexModule {
     }
 
     this.SET_AUTHENTICATED(true);
-    setAuthenticated(true);
     return true;
   }
 
@@ -49,7 +46,6 @@ class Auth extends VuexModule {
     await login2FA(credentials);
 
     this.SET_AUTHENTICATED(true);
-    setAuthenticated(true);
   }
 
   @Action
@@ -58,7 +54,6 @@ class Auth extends VuexModule {
     await register(userData);
 
     this.SET_AUTHENTICATED(true);
-    setAuthenticated(true);
   }
 
   @Action
