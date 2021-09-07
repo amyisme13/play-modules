@@ -27,7 +27,7 @@ export interface Paginated<T> {
  * Auth
  */
 
-export interface User {
+export interface AuthUser {
   id: number;
   name: string;
   email: string;

@@ -2,14 +2,6 @@ import { RouteConfig } from 'vue-router';
 
 import AppLayout from '@/layouts/AppLayout.vue';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import ForgotPassword from '@/views/Auth/ForgotPassword.vue';
-import Login from '@/views/Auth/Login.vue';
-import Register from '@/views/Auth/Register.vue';
-import ResetPassword from '@/views/Auth/ResetPassword.vue';
-import TwoFactorChallenge from '@/views/Auth/TwoFactorChallenge.vue';
-import Account from '@/views/Account/Index.vue';
-import Home from '@/views/Home.vue';
-import Roles from '@/views/Roles/Index.vue';
 
 const routes: RouteConfig[] = [
   {
@@ -20,7 +12,8 @@ const routes: RouteConfig[] = [
       {
         path: 'login',
         name: 'login',
-        component: Login,
+        component: () =>
+          import(/* webpackChunkName: "views/auth/login" */ '../views/Auth/Login.vue'),
         meta: {
           requireGuest: true,
         },
@@ -28,7 +21,8 @@ const routes: RouteConfig[] = [
       {
         path: 'register',
         name: 'register',
-        component: Register,
+        component: () =>
+          import(/* webpackChunkName: "views/auth/register" */ '../views/Auth/Register.vue'),
         meta: {
           requireGuest: true,
         },
@@ -36,7 +30,10 @@ const routes: RouteConfig[] = [
       {
         path: '2fa',
         name: '2fa-challenge',
-        component: TwoFactorChallenge,
+        component: () =>
+          import(
+            /* webpackChunkName: "views/auth/two-fa-challenge" */ '../views/Auth/TwoFactorChallenge.vue'
+          ),
         meta: {
           requireGuest: true,
         },
@@ -44,7 +41,10 @@ const routes: RouteConfig[] = [
       {
         path: 'forgot',
         name: 'forgot-password',
-        component: ForgotPassword,
+        component: () =>
+          import(
+            /* webpackChunkName: "views/auth/forgot-password" */ '../views/Auth/ForgotPassword.vue'
+          ),
         meta: {
           requireGuest: true,
         },
@@ -52,7 +52,10 @@ const routes: RouteConfig[] = [
       {
         path: 'reset',
         name: 'reset-password',
-        component: ResetPassword,
+        component: () =>
+          import(
+            /* webpackChunkName: "views/auth/reset-password" */ '../views/Auth/ResetPassword.vue'
+          ),
         meta: {
           requireGuest: true,
         },
@@ -67,7 +70,7 @@ const routes: RouteConfig[] = [
       {
         path: 'home',
         name: 'home',
-        component: Home,
+        component: () => import(/* webpackChunkName: "views/home" */ '../views/Home.vue'),
         meta: {
           requireAuth: true,
         },
@@ -75,7 +78,8 @@ const routes: RouteConfig[] = [
       {
         path: 'account',
         name: 'account-settings',
-        component: Account,
+        component: () =>
+          import(/* webpackChunkName: "views/account" */ '../views/Account/Index.vue'),
         meta: {
           requireAuth: true,
         },
@@ -83,7 +87,7 @@ const routes: RouteConfig[] = [
       {
         path: 'roles',
         name: 'role-management',
-        component: Roles,
+        component: () => import(/* webpackChunkName: "views/roles" */ '../views/Roles/Index.vue'),
         meta: {
           requireAuth: true,
         },

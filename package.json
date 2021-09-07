@@ -28,6 +28,7 @@
     "eslint-plugin-vue": "^7.16.0",
     "husky": "^7.0.1",
     "laravel-mix": "^6.0.27",
+    "laravel-mix-bundle-analyzer": "^1.0.5",
     "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
     "resolve-url-loader": "^4.0.0",
@@ -41,7 +42,6 @@
     "vuetifyjs-mix-extension": "^0.0.20"
   },
   "dependencies": {
-    "@mdi/js": "^5.9.55",
     "axios": "^0.21.1",
     "nprogress": "^0.2.0",
     "vue": "^2.6.14",

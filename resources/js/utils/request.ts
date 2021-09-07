@@ -1,5 +1,7 @@
-import { ErrorModule } from '@/store/error';
 import axios from 'axios';
+
+import { ErrorModule } from '@/store/error';
+import { snackbar } from '@/plugins/vuetify';
 import config from './config';
 
 const req = axios.create({
@@ -16,6 +18,8 @@ req.interceptors.response.use(
   (error) => {
     if (error.response) {
       ErrorModule.setError({ error: error.response.data, status: error.response.status });
+    } else {
+      snackbar('Unknown network error', 'error');
     }
 
     return Promise.reject(error);

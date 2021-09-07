@@ -2,13 +2,13 @@ import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-dec
 
 import { csrf, login, logout, user, register, login2FA } from '@/api/auth';
 import store from '@/store';
-import { LoginDTO, RegisterDTO, TwoFactorDTO, User } from '@/types/api';
+import { LoginDTO, RegisterDTO, TwoFactorDTO, AuthUser } from '@/types/api';
 import { FeaturesModule } from './features';
 
 @Module({ dynamic: true, store, name: 'auth' })
 class Auth extends VuexModule {
   authenticated = false;
-  user: User | null = null;
+  user: AuthUser | null = null;
 
   @Mutation
   SET_AUTHENTICATED(authenticated: boolean) {
@@ -16,7 +16,7 @@ class Auth extends VuexModule {
   }
 
   @Mutation
-  SET_USER(user: User | null) {
+  SET_USER(user: AuthUser | null) {
     this.user = user;
 
     FeaturesModule.loadMenus();

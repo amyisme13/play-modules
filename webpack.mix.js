@@ -2,6 +2,7 @@ const mix = require('laravel-mix');
 const path = require('path');
 
 require('vuetifyjs-mix-extension');
+require('laravel-mix-bundle-analyzer');
 
 /*
  |--------------------------------------------------------------------------
@@ -23,6 +24,10 @@ if (mix.inProduction()) {
   mix.version();
 }
 
+if (mix.isWatching()) {
+  mix.bundleAnalyzer();
+}
+
 mix.webpackConfig({
   output: {
     chunkFilename: '[name].[chunkhash:5].js',
@@ -39,3 +44,5 @@ mix
   .ts('resources/js/app.ts', 'public/js')
   .vuetify('vuetify-loader')
   .vue();
+
+mix.extract();

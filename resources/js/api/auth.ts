@@ -5,7 +5,7 @@ import {
   TwoFactorDTO,
   UpdatePasswordDTO,
   UpdateProfileDTO,
-  User,
+  AuthUser,
 } from '@/types/api';
 import config from '@/utils/config';
 import req from '@/utils/request';
@@ -28,7 +28,7 @@ export const logout = () => req.post(`${config.appUrl}/logout`);
  * User Related
  */
 
-export const user = () => req.get<User>('user');
+export const user = () => req.get<AuthUser>('user');
 
 export const updatePassword = (passwords: UpdatePasswordDTO) =>
   req.put(`${config.appUrl}/user/password`, passwords);

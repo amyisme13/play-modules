@@ -18,6 +18,8 @@ export default new Vuetify({
 
 export const eventHub = new Vue({ name: 'event-hub' });
 
-Vue.prototype.$snackbar = (message: string, color = 'primary') => {
+export const snackbar = (message: string, color = 'primary') => {
   eventHub.$emit('add', message, color);
 };
+
+Vue.prototype.$snackbar = snackbar;

@@ -1,6 +1,6 @@
 import { VuexModule, Module, Mutation, getModule, Action } from 'vuex-module-decorators';
 
-import { eventHub } from '@/plugins/vuetify';
+import { snackbar } from '@/plugins/vuetify';
 import store from '@/store';
 import { LaravelError } from '@/types/api';
 
@@ -47,7 +47,7 @@ class Error extends VuexModule {
 
     const snackbarStatuses = [403, 429, 500];
     if (snackbarStatuses.includes(error.status)) {
-      eventHub.$emit('add', error.error.message, 'error');
+      snackbar(error.error.message, 'error');
     }
   }
 }
