@@ -33,6 +33,7 @@ return [
             'composer' => 'composer.json',
             'resources/js/views/Index' => 'Resources/js/views/Index.vue',
             'resources/js/feature' => 'Resources/js/feature/index.ts',
+            'auth-provider' => 'Providers/AuthServiceProvider.php',
         ],
         'replacements' => [
             'routes/web' => [],
@@ -50,6 +51,7 @@ return [
                 'MODULE_NAMESPACE',
                 'PROVIDER_NAMESPACE',
             ],
+            'auth-provider' => ['MODULE_NAMESPACE', 'STUDLY_NAME', 'PROVIDER_NAMESPACE'],
         ],
         'gitkeep' => false,
     ],
