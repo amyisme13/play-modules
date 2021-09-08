@@ -39,7 +39,7 @@
         :loading="loading"
         :options.sync="options"
         :server-items-length="total"
-        @update:options="load"
+        @update:options="onOptionsUpdated"
       >
         <template v-slot:[`item.created_at`]="{ item }">
           <span>{{ new Date(item.created_at).toDateString() }}</span>
@@ -67,6 +67,7 @@ import { User } from '@user/types';
 @Component
 export default class Management extends Vue {
   loading = false;
+  firstUpdate = true;
 
   headers: DataTableHeader[] = [
     { text: 'ID', value: 'id' },
@@ -104,9 +105,17 @@ export default class Management extends Vue {
 
     this.users = data.data;
     this.total = data.meta.total;
-    this.options.itemsPerPage = data.meta.per_page;
 
     this.loading = false;
+  }
+
+  onOptionsUpdated() {
+    if (this.firstUpdate) {
+      this.firstUpdate = false;
+      return;
+    }
+
+    this.load();
   }
 }
 </script>

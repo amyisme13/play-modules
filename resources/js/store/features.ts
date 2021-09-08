@@ -88,7 +88,10 @@ class Features extends VuexModule {
         return acc.concat(filtered);
       }
 
-      acc.push({ label: feature.name, icon: feature.icon, menus: filtered });
+      if (filtered.length > 0) {
+        acc.push({ label: feature.name, icon: feature.icon, menus: filtered });
+      }
+
       return acc;
     }, [] as Menus);
 
