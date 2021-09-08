@@ -30,6 +30,7 @@ const feature: AppFeature = {
       label: 'User Management',
       icon: 'mdi-account-cog',
       routeName: 'user-management',
+      permissions: ['Manage users'],
     },
   ],
 };
