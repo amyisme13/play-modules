@@ -13,7 +13,7 @@ class UserPolicy
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
     public function viewAny(User $user)
     {
@@ -27,7 +27,7 @@ class UserPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
     public function view(User $user, User $model)
     {
@@ -40,7 +40,7 @@ class UserPolicy
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
     public function create(User $user)
     {
@@ -54,7 +54,7 @@ class UserPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
     public function update(User $user, User $model)
     {
@@ -68,7 +68,7 @@ class UserPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
     public function delete(User $user, User $model)
     {

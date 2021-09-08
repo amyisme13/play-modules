@@ -13,7 +13,7 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
@@ -28,7 +28,7 @@ class RoleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\RoleResource
      */
     public function store(Request $request)
     {
@@ -45,7 +45,7 @@ class RoleController extends Controller
      * Display the specified resource.
      *
      * @param \Spatie\Permission\Models\Role $role
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\RoleResource
      */
     public function show(Role $role)
     {
@@ -59,7 +59,7 @@ class RoleController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \Spatie\Permission\Models\Role $role
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\RoleResource
      */
     public function update(Request $request, Role $role)
     {
@@ -72,7 +72,7 @@ class RoleController extends Controller
         ]);
 
         $role->syncPermissions($request->permissions);
-        $role->name = $request->name;
+        $role->update(['name' => $request->name]);
         $role->save();
 
         return new RoleResource($role);

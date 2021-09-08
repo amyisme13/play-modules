@@ -15,6 +15,9 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
+        // reset cached roles and permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
         $permissions = ['Manage permissions', 'Manage users'];
 
         $roles = [

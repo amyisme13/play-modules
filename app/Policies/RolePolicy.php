@@ -14,7 +14,7 @@ class RolePolicy
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
     public function viewAny(User $user)
     {
@@ -28,7 +28,7 @@ class RolePolicy
      *
      * @param  \App\Models\User  $user
      * @param  \Spatie\Permission\Models\Role  $role
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
     public function view(User $user, Role $role)
     {
@@ -41,7 +41,7 @@ class RolePolicy
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
     public function create(User $user)
     {
@@ -55,7 +55,7 @@ class RolePolicy
      *
      * @param  \App\Models\User  $user
      * @param  \Spatie\Permission\Models\Role  $role
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
     public function update(User $user, Role $role)
     {
@@ -73,7 +73,7 @@ class RolePolicy
      *
      * @param  \App\Models\User  $user
      * @param  \Spatie\Permission\Models\Role  $role
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
     public function delete(User $user, Role $role)
     {

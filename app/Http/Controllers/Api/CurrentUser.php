@@ -12,7 +12,7 @@ class CurrentUser extends Controller
      * Handle the incoming request.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\AuthUserResource
      */
     public function __invoke(Request $request)
     {

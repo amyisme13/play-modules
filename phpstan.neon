@@ -1,10 +1,15 @@
+
 includes:
   - ./vendor/nunomaduro/larastan/extension.neon
 
 parameters:
   paths:
     - app
+    - modules
 
   # The level 8 is the highest level
   level: 6
   checkMissingIterableValueType: false
+
+  universalObjectCratesClasses:
+    - Spatie\Permission\Models\Role
