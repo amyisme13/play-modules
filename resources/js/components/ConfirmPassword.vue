@@ -9,11 +9,13 @@
         <v-text-field
           dense
           outlined
+          :append-icon="plainPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :error-messages="formErrors.password"
           label="Password"
           name="password"
-          type="password"
+          :type="plainPassword ? 'text' : 'password'"
           v-model="password"
+          @click:append="plainPassword = !plainPassword"
         />
       </v-card-text>
 
@@ -34,6 +36,7 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class ConfirmPassword extends Vue {
   dialog = false;
   confirming = true;
+  plainPassword = false;
 
   password = '';
 

@@ -31,12 +31,14 @@
               <v-text-field
                 dense
                 outlined
+                :append-icon="plainPassword ? 'mdi-eye-off' : 'mdi-eye'"
                 :error-messages="formErrors.password"
                 label="New Password"
                 name="password"
                 prepend-inner-icon="mdi-lock"
-                type="password"
+                :type="plainPassword ? 'text' : 'password'"
                 v-model="password"
+                @click:append="plainPassword = !plainPassword"
               />
 
               <v-text-field
@@ -46,7 +48,7 @@
                 label="Confirm Password"
                 name="password_confirmation"
                 prepend-inner-icon="mdi-lock-check"
-                type="password"
+                :type="plainPassword ? 'text' : 'password'"
                 v-model="confirm"
               />
             </v-form>
@@ -79,6 +81,7 @@ import { resetPassword } from '@/api/auth';
 export default class ResetPassword extends Vue {
   loading = false;
   success = false;
+  plainPassword = false;
 
   token = '';
   email = '';

@@ -37,12 +37,14 @@
                 dense
                 outlined
                 required
+                :append-icon="plainPassword ? 'mdi-eye-off' : 'mdi-eye'"
                 :error-messages="formErrors.password"
                 label="Password"
                 name="password"
                 prepend-inner-icon="mdi-lock"
-                type="password"
+                :type="plainPassword ? 'text' : 'password'"
                 v-model="password"
+                @click:append="plainPassword = !plainPassword"
               />
 
               <v-text-field
@@ -53,7 +55,7 @@
                 label="Confirm Password"
                 name="password_confirmation"
                 prepend-inner-icon="mdi-lock-check"
-                type="password"
+                :type="plainPassword ? 'text' : 'password'"
                 v-model="confirm"
               />
 
@@ -83,6 +85,7 @@ import { ErrorModule } from '@/store/error';
 @Component
 export default class Register extends Vue {
   loading = false;
+  plainPassword = false;
 
   name = '';
   email = '';

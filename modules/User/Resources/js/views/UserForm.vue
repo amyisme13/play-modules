@@ -34,11 +34,13 @@
           <v-text-field
             dense
             outlined
+            :append-icon="plainPassword ? 'mdi-eye-off' : 'mdi-eye'"
             :error-messages="formErrors.password"
             label="Password"
             name="password"
-            type="password"
+            :type="plainPassword ? 'text' : 'password'"
             v-model="user.password"
+            @click:append="plainPassword = !plainPassword"
           />
 
           <v-text-field
@@ -46,7 +48,7 @@
             outlined
             label="Confirm Password"
             name="password_confirmation"
-            type="password"
+            :type="plainPassword ? 'text' : 'password'"
             v-model="user.password_confirmation"
           />
         </template>
@@ -76,6 +78,7 @@ export default class UserForm extends Vue {
   submitting = false;
 
   showPassword = true;
+  plainPassword = false;
 
   editedUser: User | null = null;
   user: CreateUserDTO | UpdateUserDTO = {

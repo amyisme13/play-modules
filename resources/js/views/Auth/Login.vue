@@ -29,12 +29,14 @@
                 dense
                 outlined
                 required
+                :append-icon="plainPassword ? 'mdi-eye-off' : 'mdi-eye'"
                 :error-messages="formErrors.password"
                 label="Password"
                 name="password"
                 prepend-inner-icon="mdi-lock"
-                type="password"
+                :type="plainPassword ? 'text' : 'password'"
                 v-model="password"
+                @click:append="plainPassword = !plainPassword"
               />
 
               <v-checkbox hide-details class="mt-0 pt-0" label="Remember Me" v-model="remember" />
@@ -72,6 +74,7 @@ import { ErrorModule } from '@/store/error';
 @Component
 export default class Login extends Vue {
   loading = false;
+  plainPassword = false;
 
   email = '';
   password = '';

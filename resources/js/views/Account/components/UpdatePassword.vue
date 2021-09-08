@@ -7,23 +7,27 @@
         <v-text-field
           dense
           outlined
+          :append-icon="plainPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :error-messages="formErrors.current_password"
           label="Current Password"
           name="current_password"
           prepend-inner-icon="mdi-lock-clock"
-          type="password"
+          :type="plainPassword ? 'text' : 'password'"
           v-model="current"
+          @click:append="plainPassword = !plainPassword"
         />
 
         <v-text-field
           dense
           outlined
+          :append-icon="plainPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :error-messages="formErrors.password"
           label="New Password"
           name="password"
           prepend-inner-icon="mdi-lock"
-          type="password"
+          :type="plainPassword ? 'text' : 'password'"
           v-model="password"
+          @click:append="plainPassword = !plainPassword"
         />
 
         <v-text-field
@@ -33,7 +37,7 @@
           label="Confirm Password"
           name="password_confirmation"
           prepend-inner-icon="mdi-lock-check"
-          type="password"
+          :type="plainPassword ? 'text' : 'password'"
           v-model="confirm"
         />
       </v-form>
@@ -54,6 +58,7 @@ import { ErrorModule } from '@/store/error';
 @Component
 export default class UpdatePassword extends Vue {
   loading = false;
+  plainPassword = false;
 
   current = '';
   password = '';
