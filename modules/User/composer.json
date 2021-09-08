@@ -1,0 +1,23 @@
+{
+    "name": "amyisme13/user-module",
+    "description": "",
+    "authors": [
+        {
+            "name": "Azmi Makarima",
+            "email": "amy.azmim@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\User\\": ""
+        }
+    }
+}

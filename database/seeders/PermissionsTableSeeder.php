@@ -15,23 +15,25 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-        $permissions = [
-            'Super Admin' => [], // No need to put any permission here
+        $permissions = ['Manage permissions', 'Manage users'];
 
-            'Sample Role' => ['Sample Permission'],
+        $roles = [
+            'Super Admin' => [], // No need to put any permission here
         ];
 
-        foreach ($permissions as $roleStr => $rolePermissions) {
+        echo "Creating permissions...\n";
+        foreach ($permissions as $permission) {
+            Permission::findOrCreate($permission);
+            echo "'{$permission}' created\n";
+        }
+
+        echo "\nCreating roles...\n";
+        foreach ($roles as $roleStr => $rolePermissions) {
             /** @var \Spatie\Permission\Models\Role  */
             $role = Role::findOrCreate($roleStr);
-
-            foreach ($rolePermissions as $permission) {
-                Permission::findOrCreate($permission);
-            }
-
             $role->syncPermissions($rolePermissions);
 
-            echo "Role '{$roleStr}' created\n";
+            echo "'{$roleStr}' created\n";
         }
     }
 }

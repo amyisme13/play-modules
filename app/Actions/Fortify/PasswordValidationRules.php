@@ -9,10 +9,11 @@ trait PasswordValidationRules
     /**
      * Get the validation rules used to validate passwords.
      *
+     * @param bool $required
      * @return array
      */
-    protected function passwordRules()
+    protected function passwordRules($required = true)
     {
-        return ['required', 'string', new Password(), 'confirmed'];
+        return [$required ? 'required' : 'sometimes', 'string', new Password(), 'confirmed'];
     }
 }

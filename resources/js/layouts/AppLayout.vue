@@ -69,7 +69,9 @@
     </v-navigation-drawer>
 
     <v-main>
-      <router-view></router-view>
+      <v-slide-x-transition mode="out-in">
+        <router-view></router-view>
+      </v-slide-x-transition>
 
       <app-snackbar />
     </v-main>

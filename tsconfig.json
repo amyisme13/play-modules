@@ -12,9 +12,10 @@
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["resources/js/*"]
-      // currently we have to manually map the modules
-      // "@user/*": ["modules/User/Resources/js/*"]
+      "@/*": ["resources/js/*"],
+      // Currently we have to manually map the modules.
+      // Dont forget to add it in webpack.mix.js as well.
+      "@user/*": ["modules/User/Resources/js/*"]
     },
     "types": ["@types/node", "webpack-env"]
   },
