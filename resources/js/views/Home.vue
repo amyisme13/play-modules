@@ -1,10 +1,16 @@
 <template>
-  <h1>This is the home page</h1>
+  <v-container>
+    <page-header>This is the home page</page-header>
+  </v-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-@Component
+import PageHeader from '@/components/PageHeader.vue';
+
+@Component({
+  components: { PageHeader },
+})
 export default class Home extends Vue {}
 </script>

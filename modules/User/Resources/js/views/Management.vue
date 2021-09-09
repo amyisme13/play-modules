@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="mb-4 text-h4">User Management</h1>
+    <page-header>User Management</page-header>
 
     <v-card>
       <v-card-text>
@@ -61,10 +61,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { DataTableHeader } from 'vuetify';
 
+import PageHeader from '@/components/PageHeader.vue';
 import { list } from '@user/api/users';
 import { User } from '@user/types';
 
-@Component
+@Component({
+  components: { PageHeader },
+})
 export default class Management extends Vue {
   loading = false;
   firstUpdate = true;

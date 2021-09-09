@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="mb-4 text-h4">Account Settings</h1>
+    <page-header>Account Settings</page-header>
 
     <v-row>
       <v-col cols="12" md="6">
@@ -21,12 +21,13 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+import PageHeader from '@/components/PageHeader.vue';
 import TwoFactorAuth from './components/TwoFactorAuth.vue';
 import UpdatePassword from './components/UpdatePassword.vue';
 import UpdateProfile from './components/UpdateProfile.vue';
 
 @Component({
-  components: { TwoFactorAuth, UpdatePassword, UpdateProfile },
+  components: { PageHeader, TwoFactorAuth, UpdatePassword, UpdateProfile },
 })
 export default class Account extends Vue {}
 </script>

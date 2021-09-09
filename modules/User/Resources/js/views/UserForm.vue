@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="mb-4 text-h4">{{ title }}</h1>
+    <page-header :back="{ name: 'user-management' }">{{ title }}</page-header>
 
     <v-card>
       <v-card-text>
@@ -68,11 +68,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+import PageHeader from '@/components/PageHeader.vue';
+import { ErrorModule } from '@/store/error';
 import { show, create, update } from '@user/api/users';
 import { CreateUserDTO, UpdateUserDTO, User } from '@user/types';
-import { ErrorModule } from '@/store/error';
 
-@Component
+@Component({
+  components: { PageHeader },
+})
 export default class UserForm extends Vue {
   loading = false;
   submitting = false;

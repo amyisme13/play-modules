@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 class="mb-4 text-h4">Role Management</h1>
+    <page-header>Role Management</page-header>
 
     <v-row>
       <v-col cols="12" md="4">
@@ -36,12 +36,13 @@ import { Component, Vue } from 'vue-property-decorator';
 import { createRole, listPermissions, listRoles } from '@/api/roles';
 import { Permission, Role } from '@/types/api';
 
+import PageHeader from '@/components/PageHeader.vue';
 import CreateRole from './components/CreateRole.vue';
 import RoleList from './components/RoleList.vue';
 import RoleSettings from './components/RoleSettings.vue';
 
 @Component({
-  components: { CreateRole, RoleList, RoleSettings },
+  components: { PageHeader, CreateRole, RoleList, RoleSettings },
 })
 export default class Roles extends Vue {
   loading = false;
