@@ -14,6 +14,7 @@ export interface AppMenuHeader {
 }
 
 export interface AppFeature {
+  module?: string;
   name: string;
   icon: string;
   routes: RouteConfig[];

@@ -92,10 +92,8 @@ export default class Management extends Vue {
   users: User[] = [];
   total = 0;
 
-  created() {
-    this.load();
-  }
-
+  // Will be run automatically on created
+  // thanks to datatable options.
   async load() {
     this.loading = true;
 
@@ -113,11 +111,6 @@ export default class Management extends Vue {
   }
 
   onOptionsUpdated() {
-    if (this.firstUpdate) {
-      this.firstUpdate = false;
-      return;
-    }
-
     this.load();
   }
 }

@@ -63,7 +63,9 @@ class Features extends VuexModule {
   fetchFeatures() {
     const req = require.context('../../../modules/', true, /js\/feature\/index.ts$/);
     const nonCoreFeatures: AppFeature[] = req.keys().map((key) => req(key).default);
-    const activeFeatures = nonCoreFeatures.filter((feat) => this.active.includes(feat.name));
+    const activeFeatures = nonCoreFeatures.filter((feat) =>
+      this.active.includes(feat.module || feat.name)
+    );
 
     const features = [coreFeature, ...activeFeatures];
 
