@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -30,5 +32,9 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('vueApp', function () {
             return '<div id="app" data-init="{{ json_encode(init_data()) }}"></div>';
         });
+
+        Relation::enforceMorphMap([
+            'user' => User::class,
+        ]);
     }
 }
