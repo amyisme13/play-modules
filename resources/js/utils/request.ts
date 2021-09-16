@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-import { ErrorModule } from '@/store/error';
-import { snackbar } from '@/plugins/vuetify';
+import { useErrorStore } from '@/store/error';
 import config from './config';
 
 export function createParams(params: Record<string, any>) {
@@ -51,15 +50,17 @@ req.interceptors.request.use((config) => {
 
 req.interceptors.response.use(
   (res) => {
-    ErrorModule.RESET();
+    const errorStore = useErrorStore();
+    errorStore.$reset();
 
     return res;
   },
   (error) => {
+    const errorStore = useErrorStore();
     if (error.response) {
-      ErrorModule.setError({ error: error.response.data, status: error.response.status });
+      errorStore.setError(error.response.data, error.response.status);
     } else {
-      snackbar('Unknown network error', 'error');
+      // Unknown network error
     }
 
     return Promise.reject(error);

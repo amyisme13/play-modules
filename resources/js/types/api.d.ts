@@ -2,13 +2,9 @@
  * Common
  */
 
-export interface ValidationError {
-  [key: string]: string[];
-}
-
 export interface LaravelError {
   message: string;
-  errors?: ValidationError;
+  errors?: Record<string, string[]>;
 }
 
 export interface PaginationMeta {

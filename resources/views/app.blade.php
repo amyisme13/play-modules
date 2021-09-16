@@ -8,18 +8,11 @@
 
   <title>Laravel</title>
 
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
-
-  <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
+  @vite
 </head>
 
 <body class="font-sans antialiased">
   @vueApp
-
-  <script src="{{ asset(mix('js/manifest.js')) }}"></script>
-  <script src="{{ asset(mix('js/vendor.js')) }}"></script>
-  <script src="{{ asset(mix('js/app.js')) }}"></script>
 </body>
 
 </html>

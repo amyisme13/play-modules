@@ -5,8 +5,28 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { defineComponent } from 'vue';
 
-@Component
-export default class App extends Vue {}
+import { useAuthStore } from '@/store/auth';
+import { useFeaturesStore } from '@/store/features';
+
+export default defineComponent({
+  setup() {
+    const el = document.getElementById('app') as HTMLElement;
+    const initData = el.dataset.init || '{}';
+    const init = JSON.parse(initData);
+
+    const auth = useAuthStore();
+    const features = useFeaturesStore();
+
+    auth.$patch({
+      authenticated: init.authenticated || false,
+      user: init.user || null,
+    });
+
+    features.active = init.features || [];
+
+    return {};
+  },
+});
 </script>

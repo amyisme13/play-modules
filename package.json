@@ -1,14 +1,10 @@
 {
   "private": true,
   "scripts": {
-    "dev": "npm run development",
-    "development": "mix",
-    "watch": "mix watch",
-    "watch-poll": "mix watch -- --watch-options-poll=1000",
-    "hot": "mix watch --hot",
-    "prod": "npm run production",
-    "production": "mix --production",
-    "postinstall": "husky install",
+    "dev": "vite --host=0.0.0.0",
+    "build": "NODE_ENV=production vite build",
+    "serve": "vite preview",
+    "prepare": "husky install",
     "pre-commit": "lint-staged"
   },
   "devDependencies": {
@@ -20,36 +16,25 @@
     "@types/webpack-env": "^1.16.2",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
+    "@vitejs/plugin-vue": "^1.6.2",
+    "@vue/compiler-sfc": "^3.2.11",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
-    "deepmerge": "^4.2.2",
     "eslint": "^7.32.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.16.0",
     "husky": "^7.0.1",
-    "laravel-mix": "^6.0.27",
-    "laravel-mix-bundle-analyzer": "^1.0.5",
+    "laravel-vite": "^0.0.16",
     "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
-    "resolve-url-loader": "^4.0.0",
-    "sass": "~1.32",
-    "sass-loader": "^12.1.0",
-    "ts-loader": "^9.2.5",
     "typescript": "^4.3.5",
-    "vue-loader": "^15.9.7",
-    "vue-template-compiler": "^2.6.14",
-    "vuetify-loader": "^1.7.2",
-    "vuetifyjs-mix-extension": "^0.0.20"
+    "vite": "^2.5.7"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "nprogress": "^0.2.0",
-    "vue": "^2.6.14",
-    "vue-class-component": "^7.2.6",
-    "vue-property-decorator": "^9.1.2",
-    "vue-router": "^3.5.2",
-    "vuetify": "^2.5.8",
-    "vuex": "^3.6.2",
-    "vuex-module-decorators": "^1.0.1"
+    "pinia": "^2.0.0-rc.9",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0"
   }
 }

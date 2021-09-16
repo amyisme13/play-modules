@@ -1,4 +1,4 @@
-import { RouteConfig } from 'vue-router';
+import { RouteRecordRaw } from 'vue-router';
 
 export interface AppMenu {
   label: string;
@@ -17,6 +17,6 @@ export interface AppFeature {
   module?: string;
   name: string;
   icon: string;
-  routes: RouteConfig[];
+  routes: RouteRecordRaw[];
   menus: AppMenu[];
 }

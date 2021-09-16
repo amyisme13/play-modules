@@ -4,13 +4,10 @@
 // }
 
 export default {
-  appName: process.env.MIX_APP_NAME,
-  appUrl: process.env.MIX_APP_URL,
-  appEnv: process.env.MIX_APP_ENV,
+  appName: import.meta.env.MIX_APP_NAME,
+  appUrl: import.meta.env.MIX_APP_URL,
+  appEnv: import.meta.env.MIX_APP_ENV,
 
-  basePath: process.env.MIX_BASE_PATH,
-  baseApi: process.env.MIX_BASE_API,
-
-  pusherAppKey: process.env.MIX_PUSHER_APP_KEY,
-  pusherAppCluster: process.env.MIX_PUSHER_APP_CLUSTER,
+  basePath: import.meta.env.MIX_BASE_PATH,
+  baseApi: import.meta.env.MIX_BASE_API,
 };

@@ -17,7 +17,7 @@
       // Dont forget to add it in webpack.mix.js as well.
       "@user/*": ["modules/User/Resources/js/*"]
     },
-    "types": ["@types/node", "webpack-env"]
+    "types": ["@types/node", "webpack-env", "vite/client"]
   },
   "include": [
     "resources/js/**/*.ts",
