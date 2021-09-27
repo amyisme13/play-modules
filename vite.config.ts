@@ -1,6 +1,10 @@
-import vue from '@vitejs/plugin-vue';
+import Vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'laravel-vite';
 import path from 'path';
+import IconsResolver from 'unplugin-icons/resolver';
+import Icons from 'unplugin-icons/vite';
+import Components from 'unplugin-vue-components/vite';
+import WindiCSS from 'vite-plugin-windicss';
 
 export default defineConfig({
   resolve: {
@@ -8,4 +12,11 @@ export default defineConfig({
       '@/': `${path.resolve(__dirname, 'resources/js')}/`,
     },
   },
-}).withPlugin(vue);
+}).withPlugins(
+  Vue(),
+  ...WindiCSS(),
+  Components({
+    resolvers: IconsResolver(),
+  }),
+  Icons({ compiler: 'vue3' })
+);

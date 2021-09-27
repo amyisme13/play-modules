@@ -15,8 +15,8 @@ export const configure = (router: Router) => {
 
     const auth = useAuthStore();
     const features = useFeaturesStore();
-    const shouldRedirectTo = from.query.redirectTo;
 
+    // Load data when not loaded yet.
     if (auth.authenticated && !auth.user) {
       await auth.loadUser();
     }
@@ -30,23 +30,30 @@ export const configure = (router: Router) => {
       return;
     }
 
-    // if (!authenticated && to.meta?.requireAuth) {
-    //   next({ name: 'login', query: { redirectTo: to.fullPath } });
-    //   return;
-    // }
-
-    // if (!authenticated && shouldRedirectTo && !to.query.redirectTo) {
-    //   next({ ...to, query: { redirectTo: shouldRedirectTo } });
-    //   return;
-    // }
-
-    // if (authenticated && shouldRedirectTo && shouldRedirectTo !== to.fullPath) {
-    //   next(shouldRedirectTo);
-    //   return;
-    // }
+    // Check using meta
+    if (!auth.authenticated && to.meta?.requireAuth) {
+      next({ name: 'login', query: { redirectTo: to.fullPath } });
+      return;
+    }
 
     if (auth.authenticated && to.meta?.requireGuest) {
       next({ name: 'home' });
+      return;
+    }
+
+    // Check if need to be redirected after auth
+    let shouldRedirectTo = from.query.redirectTo;
+    if (Array.isArray(shouldRedirectTo)) {
+      shouldRedirectTo = shouldRedirectTo[0];
+    }
+
+    if (!auth.authenticated && shouldRedirectTo && !to.query.redirectTo) {
+      next({ ...to, query: { redirectTo: shouldRedirectTo } });
+      return;
+    }
+
+    if (auth.authenticated && shouldRedirectTo && shouldRedirectTo !== to.fullPath) {
+      next(shouldRedirectTo);
       return;
     }
 

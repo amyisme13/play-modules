@@ -1,31 +1,28 @@
+import { markRaw } from 'vue';
 import { AppFeature } from '@/types';
-// import routes from './routes';
+
+import routes from './routes';
+
+import HeartIcon from '~icons/heroicons-outline/heart';
+import HomeIcon from '~icons/heroicons-outline/home';
 
 const feature: AppFeature = {
   name: 'Core',
-  icon: 'mdi-atom',
-  routes: [
+  icon: markRaw(HeartIcon),
+  routes,
+  menus: [
     {
-      path: '/home',
-      name: 'home',
-      component: () => import('@/views/Home.vue'),
+      label: 'Home',
+      routeName: 'home',
+      icon: markRaw(HomeIcon),
     },
+    // {
+    //   label: 'Role Management',
+    //   routeName: 'role-management',
+    //   icon: 'mdi-account-lock',
+    //   permissions: ['Manage permissions'],
+    // },
   ],
-  menus: [],
-  // routes,
-  // menus: [
-  //   {
-  //     label: 'Home',
-  //     routeName: 'home',
-  //     icon: 'mdi-home',
-  //   },
-  //   {
-  //     label: 'Role Management',
-  //     routeName: 'role-management',
-  //     icon: 'mdi-account-lock',
-  //     permissions: ['Manage permissions'],
-  //   },
-  // ],
 };
 
 export default feature;

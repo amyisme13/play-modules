@@ -1,109 +1,171 @@
 <template>
-  <v-container fluid class="fill-height">
-    <v-row align="center" justify="center">
-      <v-col cols="12" sm="8" md="4">
-        <v-card>
-          <v-toolbar flat class="white--text" color="primary">
-            <v-toolbar-title>Login</v-toolbar-title>
-          </v-toolbar>
+  <AuthCard>
+    <template #header>
+      <h2 class="font-extrabold text-center text-3xl text-gray-900">Sign in to your account</h2>
 
-          <v-card-text>
-            <v-alert v-if="formErrors.code" dense type="error">
-              {{ formErrors.code[0] }}
-            </v-alert>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Or
+        <router-link
+          :to="{ name: 'register' }"
+          class="font-medium text-primary-600 hover:text-primary-500"
+        >
+          create a new account
+        </router-link>
+      </p>
+    </template>
 
-            <v-form>
-              <v-text-field
-                dense
-                outlined
-                required
-                :error-messages="formErrors.email"
-                label="Email"
-                name="email"
-                prepend-inner-icon="mdi-email"
-                type="email"
-                v-model="email"
-              />
+    <div v-if="tfaError" class="rounded-md bg-error-50 p-4 mb-6">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <i-heroicons-solid-x-circle class="h-5 w-5 text-error-400" />
+        </div>
 
-              <v-text-field
-                dense
-                outlined
-                required
-                :append-icon="plainPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                :error-messages="formErrors.password"
-                label="Password"
-                name="password"
-                prepend-inner-icon="mdi-lock"
-                :type="plainPassword ? 'text' : 'password'"
-                v-model="password"
-                @click:append="plainPassword = !plainPassword"
-              />
+        <div class="ml-3">
+          <p class="text-sm font-medium text-error-800">
+            {{ tfaError }}
+          </p>
+        </div>
+      </div>
+    </div>
 
-              <v-checkbox hide-details class="mt-0 pt-0" label="Remember Me" v-model="remember" />
-            </v-form>
+    <form class="space-y-6" @submit.prevent="login">
+      <TextInput
+        v-model="email"
+        required
+        :errors="formErrors.email"
+        label="Email address"
+        name="email"
+        type="email"
+      >
+        <template #leading="{ iconClass }">
+          <i-heroicons-solid-mail :class="iconClass" />
+        </template>
+      </TextInput>
 
-            <div class="d-flex align-center"></div>
-          </v-card-text>
+      <TextInput
+        v-model="password"
+        required
+        :errors="formErrors.password"
+        label="Password"
+        name="password"
+        :type="plainPassword ? 'text' : 'password'"
+      >
+        <template #leading="{ iconClass }">
+          <i-heroicons-solid-lock-closed :class="iconClass" />
+        </template>
 
-          <v-card-actions>
-            <v-btn class="white--text" color="primary" @click="login" :loading="loading">
-              Login
-            </v-btn>
+        <template #trailing="{ iconClass }">
+          <button tabindex="-1" type="button" @click.prevent="plainPassword = !plainPassword">
+            <i-heroicons-solid-eye-off v-if="plainPassword" :class="iconClass" />
+            <i-heroicons-solid-eye v-else :class="iconClass" />
+          </button>
+        </template>
+      </TextInput>
 
-            <v-btn text class="mr-2" :to="{ name: 'register' }"> Register </v-btn>
+      <div class="flex items-center justify-between">
+        <Checkbox v-model:checked="remember" label="Remember me" name="remember" />
 
-            <router-link
-              class="ml-2 flex-grow-1 text-caption u-hover"
-              :to="{ name: 'forgot-password' }"
-            >
-              Forgot your password?
-            </router-link>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+        <div class="text-sm">
+          <router-link
+            :to="{ name: 'forgot-password' }"
+            class="font-medium text-primary-600 hover:text-primary-500"
+          >
+            Forgot your password?
+          </router-link>
+        </div>
+      </div>
+
+      <div>
+        <Button block :disabled="loading" type="submit">Sign in</Button>
+      </div>
+    </form>
+
+    <div class="mt-6">
+      <div class="relative">
+        <div class="flex inset-0 absolute items-center">
+          <div class="border-t border-gray-300 w-full"></div>
+        </div>
+
+        <div class="flex text-sm relative justify-center">
+          <span class="bg-white px-2 text-gray-500"> Or continue with </span>
+        </div>
+      </div>
+
+      <div class="mt-6 grid gap-3 grid-cols-3">
+        <div>
+          <Button block color="none" @click="loginSocial">
+            <span class="sr-only">Sign in with Facebook</span>
+            <i-mdi-facebook class="h-5 w-5" />
+          </Button>
+        </div>
+
+        <div>
+          <Button block color="none" @click="loginSocial">
+            <span class="sr-only">Sign in with Facebook</span>
+            <i-mdi-twitter class="h-5 w-5" />
+          </Button>
+        </div>
+
+        <div>
+          <Button block color="none" @click="loginSocial">
+            <span class="sr-only">Sign in with Facebook</span>
+            <i-mdi-github class="h-5 w-5" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  </AuthCard>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 
-import { AuthModule } from '@/store/auth';
-import { ErrorModule } from '@/store/error';
+import Button from '@/components/Form/Button.vue';
+import Checkbox from '@/components/Form/Checkbox.vue';
+import TextInput from '@/components/Form/TextInput.vue';
+import { useAuthStore } from '@/store/auth';
+import { useErrorStore } from '@/store/error';
 
-@Component
-export default class Login extends Vue {
-  loading = false;
-  plainPassword = false;
+import AuthCard from './components/AuthCard.vue';
 
-  email = '';
-  password = '';
-  remember = false;
+const loginSocial = () => alert('Not implemented yet');
 
-  get formErrors() {
-    return ErrorModule.formErrors;
-  }
+const loading = ref(false);
+const plainPassword = ref(false);
 
-  async login() {
-    this.loading = true;
+const email = ref('');
+const password = ref('');
+const remember = ref(false);
 
-    try {
-      const result = await AuthModule.login({
-        email: this.email,
-        password: this.password,
-        remember: this.remember,
-      });
+const errorStore = useErrorStore();
+const formErrors = computed(() => errorStore.formErrors);
+const tfaError = computed(() =>
+  errorStore.formErrors.code ? errorStore.formErrors.code[0] : null
+);
 
-      if (result) {
-        this.$router.push({ name: 'home' });
-      } else {
-        this.$router.push({ name: '2fa-challenge' });
-      }
-    } catch (err) {
-      //
+const authStore = useAuthStore();
+const router = useRouter();
+
+const login = async () => {
+  loading.value = true;
+
+  try {
+    const result = await authStore.login({
+      email: email.value,
+      password: password.value,
+      remember: remember.value,
+    });
+
+    if (result) {
+      router.push({ name: 'home' });
+    } else {
+      router.push({ name: '2fa-challenge' });
     }
-
-    this.loading = false;
+  } catch (err) {
+    //
   }
-}
+
+  loading.value = false;
+};
 </script>

@@ -17,7 +17,7 @@
       // Dont forget to add it in webpack.mix.js as well.
       "@user/*": ["modules/User/Resources/js/*"]
     },
-    "types": ["@types/node", "webpack-env", "vite/client"]
+    "types": ["@types/node", "vite/client", "unplugin-icons/types/vue"]
   },
   "include": [
     "resources/js/**/*.ts",

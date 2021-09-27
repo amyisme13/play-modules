@@ -8,6 +8,8 @@
 
   <title>Laravel</title>
 
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
   @vite
 </head>
 

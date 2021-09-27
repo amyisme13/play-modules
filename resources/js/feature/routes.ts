@@ -1,19 +1,15 @@
 import { RouteRecordRaw } from 'vue-router';
 
-import AppLayout from '@/layouts/AppLayout.vue';
-import AuthLayout from '@/layouts/AuthLayout.vue';
-
 const routes: RouteRecordRaw[] = [
   {
     path: '/auth',
-    component: AuthLayout,
+    component: () => import('../layouts/AuthLayout.vue'),
     redirect: 'login',
     children: [
       {
         path: 'login',
         name: 'login',
-        component: () =>
-          import(/* webpackChunkName: "views/auth/login" */ '../views/Auth/Login.vue'),
+        component: () => import('../views/Auth/Login.vue'),
         meta: {
           requireGuest: true,
         },
@@ -21,8 +17,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'register',
         name: 'register',
-        component: () =>
-          import(/* webpackChunkName: "views/auth/register" */ '../views/Auth/Register.vue'),
+        component: () => import('../views/Auth/Register.vue'),
         meta: {
           requireGuest: true,
         },
@@ -30,10 +25,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '2fa',
         name: '2fa-challenge',
-        component: () =>
-          import(
-            /* webpackChunkName: "views/auth/two-fa-challenge" */ '../views/Auth/TwoFactorChallenge.vue'
-          ),
+        component: () => import('../views/Auth/TwoFactorChallenge.vue'),
         meta: {
           requireGuest: true,
         },
@@ -41,10 +33,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'forgot',
         name: 'forgot-password',
-        component: () =>
-          import(
-            /* webpackChunkName: "views/auth/forgot-password" */ '../views/Auth/ForgotPassword.vue'
-          ),
+        component: () => import('../views/Auth/ForgotPassword.vue'),
         meta: {
           requireGuest: true,
         },
@@ -52,10 +41,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'reset',
         name: 'reset-password',
-        component: () =>
-          import(
-            /* webpackChunkName: "views/auth/reset-password" */ '../views/Auth/ResetPassword.vue'
-          ),
+        component: () => import('../views/Auth/ResetPassword.vue'),
         meta: {
           requireGuest: true,
         },
@@ -64,34 +50,34 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/',
-    component: AppLayout,
+    component: () => import('../layouts/AppLayout.vue'),
     redirect: 'home',
     children: [
       {
         path: 'home',
         name: 'home',
-        component: () => import(/* webpackChunkName: "views/home" */ '../views/Home.vue'),
+        component: () => import('../views/Home.vue'),
         meta: {
           requireAuth: true,
         },
       },
-      {
-        path: 'account',
-        name: 'account-settings',
-        component: () =>
-          import(/* webpackChunkName: "views/account" */ '../views/Account/Index.vue'),
-        meta: {
-          requireAuth: true,
-        },
-      },
-      {
-        path: 'roles',
-        name: 'role-management',
-        component: () => import(/* webpackChunkName: "views/roles" */ '../views/Roles/Index.vue'),
-        meta: {
-          requireAuth: true,
-        },
-      },
+      // {
+      //   path: 'account',
+      //   name: 'account-settings',
+      //   component: () =>
+      //     import( '../views/Account/Index.vue'),
+      //   meta: {
+      //     requireAuth: true,
+      //   },
+      // },
+      // {
+      //   path: 'roles',
+      //   name: 'role-management',
+      //   component: () => import( '../views/Roles/Index.vue'),
+      //   meta: {
+      //     requireAuth: true,
+      //   },
+      // },
     ],
   },
 ];

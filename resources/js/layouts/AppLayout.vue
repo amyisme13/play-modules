@@ -1,125 +1,37 @@
+<!-- This example requires Tailwind CSS v2.0+ -->
 <template>
-  <v-app>
-    <v-app-bar app clipped-left dark color="primary">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+  <div v-bind="$attrs" class="flex h-screen bg-gray-100 overflow-hidden">
+    <Sidebar v-model="sidebarOpened" />
 
-      <v-toolbar-title>{{ appName }}</v-toolbar-title>
+    <div class="flex flex-col flex-1 w-0 overflow-hidden">
+      <div class="pt-1 pl-1 sm:(pt-3 pl-3) md:hidden">
+        <button
+          class="rounded-md h-12 -mt-0.5 -ml-0.5 text-gray-500 w-12 inline-flex items-center justify-center hover:text-gray-900 focus:(outline-none ring-inset ring-2 ring-primary-500)"
+          @click="sidebarOpened = true"
+        >
+          <span class="sr-only">Open sidebar</span>
+          <i-heroicons-outline-menu class="h-6 w-6" aria-hidden="true" />
+        </button>
+      </div>
 
-      <v-spacer></v-spacer>
+      <main class="flex-1 z-0 relative overflow-y-auto focus:outline-none">
+        <div class="py-6">
+          <div class="mx-auto mb-4 max-w-7xl px-4 sm:px-6 md:px-8">
+            <router-view></router-view>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
 
-      <v-menu bottom left :offset-x="!isMobile">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn v-if="user" text v-bind="attrs" v-on="on">{{ user.name }}</v-btn>
-        </template>
-
-        <v-list width="300">
-          <v-list-item :to="{ name: 'account-settings' }">
-            <v-list-item-icon>
-              <v-icon>mdi-cog</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Account Settings</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item @click="logout">
-            <v-list-item-icon>
-              <v-icon>mdi-logout-variant</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Logout</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-app-bar>
-
-    <v-navigation-drawer app clipped v-model="drawer">
-      <v-list>
-        <template v-for="(menu, i) in menus">
-          <v-list-item
-            v-if="'routeName' in menu"
-            :key="menu.routeName"
-            :to="{ name: menu.routeName }"
-          >
-            <v-list-item-icon>
-              <v-icon>{{ menu.icon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-title>{{ menu.label }}</v-list-item-title>
-          </v-list-item>
-
-          <v-list-group v-else :key="i" :prepend-icon="menu.icon">
-            <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title>{{ menu.label }}</v-list-item-title>
-              </v-list-item-content>
-            </template>
-
-            <v-list-item
-              v-for="item in menu.menus"
-              :key="item.routeName"
-              :to="{ name: item.routeName }"
-            >
-              <v-list-item-icon class="ml-4">
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-icon>
-
-              <v-list-item-title>{{ item.label }}</v-list-item-title>
-            </v-list-item>
-          </v-list-group>
-        </template>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-main>
-      <v-slide-x-transition mode="out-in">
-        <router-view></router-view>
-      </v-slide-x-transition>
-
-      <app-snackbar />
-    </v-main>
-  </v-app>
+  <AppNotification />
 </template>
 
-<script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref } from 'vue';
 
-import AppSnackbar from '@/components/AppSnackbar.vue';
-import { AuthModule } from '@/store/auth';
-import { FeaturesModule } from '@/store/features';
-import config from '@/utils/config';
+import AppNotification from '@/components/AppNotification.vue';
+import Sidebar from '@/components/Sidebar/Index.vue';
 
-@Component({
-  components: { AppSnackbar },
-})
-export default class AppLayout extends Vue {
-  drawer = true;
-  loggingOut = false;
-
-  get appName() {
-    return config.appName;
-  }
-
-  get menus() {
-    return FeaturesModule.menus;
-  }
-
-  get user() {
-    return AuthModule.user;
-  }
-
-  get isMobile() {
-    return this.$vuetify.breakpoint.smAndDown;
-  }
-
-  mounted() {
-    this.$nextTick(() => (this.drawer = !this.isMobile));
-  }
-
-  async logout() {
-    this.loggingOut = true;
-
-    await AuthModule.logout();
-    this.$router.push({ name: 'login' });
-
-    this.loggingOut = false;
-  }
-}
+const sidebarOpened = ref(false);
 </script>

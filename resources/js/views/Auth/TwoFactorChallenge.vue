@@ -1,105 +1,99 @@
 <template>
-  <v-container fluid class="fill-height">
-    <v-row align="center" justify="center">
-      <v-col cols="12" sm="8" md="4">
-        <v-card>
-          <v-card-text>
-            <div v-if="recovery">
-              <p>
-                Please confirm access to your account by entering one of your emergency recovery
-                codes.
-              </p>
+  <AuthCard>
+    <template #header>
+      <h2 class="font-extrabold text-center text-3xl text-gray-900">Forgot password</h2>
+    </template>
 
-              <v-text-field
-                dense
-                outlined
-                :error-messages="formErrors.code"
-                label="Recovery Code"
-                name="recovery_code"
-                prepend-inner-icon="mdi-history"
-                type="text"
-                v-model="recoveryCode"
-              />
-            </div>
+    <p v-if="usingRecovery" class="text-gray-700 text-sm mb-4">
+      Please confirm access to your account by entering one of your emergency recovery codes.
+    </p>
 
-            <div v-else>
-              <p>
-                Please confirm access to your account by entering the authentication code provided
-                by your authenticator application.
-              </p>
+    <p v-else class="text-gray-700 text-sm mb-4">
+      Please confirm access to your account by entering the authentication code provided by your
+      authenticator application.
+    </p>
 
-              <v-text-field
-                dense
-                outlined
-                :error-messages="formErrors.code"
-                label="Code"
-                name="code"
-                prepend-inner-icon="mdi-lock"
-                type="text"
-                v-model="code"
-              />
-            </div>
-          </v-card-text>
+    <form class="space-y-6" @submit.prevent="login">
+      <TextInput
+        v-if="usingRecovery"
+        v-model="recoveryCode"
+        required
+        label="Recovery Code"
+        name="recovery_code"
+      >
+        <template #leading="{ iconClass }">
+          <i-heroicons-solid-clipboard-list :class="iconClass" />
+        </template>
+      </TextInput>
 
-          <v-card-actions>
-            <v-btn class="white--text ml-2" color="primary" @click="login" :loading="loading">
-              Login
-            </v-btn>
+      <TextInput v-else v-model="code" required label="Code" name="code">
+        <template #leading="{ iconClass }">
+          <i-heroicons-solid-lock-closed :class="iconClass" />
+        </template>
+      </TextInput>
 
-            <v-btn v-if="recovery" text @click="toggleRecovery"> Use 2FA Code </v-btn>
+      <div class="space-x-2">
+        <Button :disabled="loading" type="submit">Login</Button>
 
-            <v-btn v-else text @click="toggleRecovery"> Use Recovery Code </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+        <Button v-if="usingRecovery" color="none" type="button" @click="toggleRecovery">
+          Use 2FA Code
+        </Button>
+
+        <Button v-else color="none" type="button" @click="toggleRecovery">
+          Use Recovery Code
+        </Button>
+      </div>
+    </form>
+  </AuthCard>
 </template>
 
-<script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, computed, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
 
-import { AuthModule } from '@/store/auth';
-import { ErrorModule } from '@/store/error';
+import Button from '@/components/Form/Button.vue';
+import TextInput from '@/components/Form/TextInput.vue';
+import { useAuthStore } from '@/store/auth';
+import { useErrorStore } from '@/store/error';
 
-@Component
-export default class TwoFactorChallenge extends Vue {
-  loading = false;
-  recovery = false;
+import AuthCard from './components/AuthCard.vue';
 
-  code = '';
-  recoveryCode = '';
+const errorStore = useErrorStore();
+const formErrors = computed(() => errorStore.formErrors);
 
-  get formErrors() {
-    return ErrorModule.formErrors;
+const usingRecovery = ref(false);
+
+const code = ref('');
+const recoveryCode = ref('');
+
+const toggleRecovery = () => {
+  usingRecovery.value = !usingRecovery.value;
+  if (usingRecovery.value) {
+    code.value = '';
+  } else {
+    recoveryCode.value = '';
+  }
+};
+
+const loading = ref(false);
+const authStore = useAuthStore();
+const router = useRouter();
+
+const login = async () => {
+  loading.value = true;
+
+  try {
+    await authStore.login2FA({
+      code: usingRecovery.value ? '' : code.value,
+      recovery_code: usingRecovery.value ? recoveryCode.value : '',
+    });
+
+    router.push({ name: 'home' });
+  } catch (err) {
+    errorStore.shouldReset = false;
+    router.push({ name: 'login' }).then(() => (errorStore.shouldReset = true));
   }
 
-  toggleRecovery() {
-    this.recovery = !this.recovery;
-    if (this.recovery) {
-      this.code = '';
-    } else {
-      this.recoveryCode = '';
-    }
-  }
-
-  async login() {
-    this.loading = true;
-
-    try {
-      await AuthModule.login2FA({
-        code: this.recovery ? '' : this.code,
-        recovery_code: this.recovery ? this.recoveryCode : '',
-      });
-
-      this.$router.push({ name: 'home' });
-    } catch (err) {
-      ErrorModule.SET_DONT_RESET(true);
-      this.$router.push({ name: 'login' });
-      this.$nextTick(() => ErrorModule.SET_DONT_RESET(false));
-    }
-
-    this.loading = false;
-  }
-}
+  loading.value = false;
+};
 </script>

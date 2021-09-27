@@ -4,10 +4,10 @@
 // }
 
 export default {
-  appName: import.meta.env.MIX_APP_NAME,
-  appUrl: import.meta.env.MIX_APP_URL,
-  appEnv: import.meta.env.MIX_APP_ENV,
+  appName: import.meta.env.VITE_APP_NAME as string,
+  appUrl: import.meta.env.VITE_APP_URL as string,
+  appEnv: import.meta.env.VITE_APP_ENV as string,
 
-  basePath: import.meta.env.MIX_BASE_PATH,
-  baseApi: import.meta.env.MIX_BASE_API,
+  basePath: import.meta.env.VITE_BASE_PATH as string,
+  baseApi: import.meta.env.VITE_BASE_API as string,
 };
