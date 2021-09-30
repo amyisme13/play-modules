@@ -61,15 +61,14 @@ const routes: RouteRecordRaw[] = [
           requireAuth: true,
         },
       },
-      // {
-      //   path: 'account',
-      //   name: 'account-settings',
-      //   component: () =>
-      //     import( '../views/Account/Index.vue'),
-      //   meta: {
-      //     requireAuth: true,
-      //   },
-      // },
+      {
+        path: 'account',
+        name: 'account-settings',
+        component: () => import('../views/Account/Index.vue'),
+        meta: {
+          requireAuth: true,
+        },
+      },
       // {
       //   path: 'roles',
       //   name: 'role-management',

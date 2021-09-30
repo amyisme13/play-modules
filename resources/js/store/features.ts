@@ -69,11 +69,6 @@ export const useFeaturesStore = defineStore('features', {
 
       const menus = this.features.reduce((acc, feature) => {
         const filtered = filterMenus(authStore.user, feature.menus);
-
-        if (feature.name === 'Core') {
-          return acc.concat(filtered);
-        }
-
         if (filtered.length > 0) {
           acc.push({ label: feature.name, icon: feature.icon, menus: filtered });
         }

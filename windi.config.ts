@@ -2,9 +2,10 @@ import colors from 'windicss/colors';
 import defaultTheme from 'windicss/defaultTheme';
 import { defineConfig } from 'windicss/helpers';
 import forms from 'windicss/plugin/forms';
+import lineClamp from 'windicss/plugin/line-clamp';
 
 export default defineConfig({
-  plugins: [forms],
+  plugins: [forms, lineClamp],
 
   extract: {
     include: ['resources/**/*.{vue,php}', 'modules/*/Resources/**/*.{vue,php}'],

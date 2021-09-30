@@ -3,7 +3,14 @@
     <slot></slot>
   </a>
 
-  <a v-else v-bind="$attrs" :href="href" :class="classes" @click="navigate">
+  <a
+    v-else
+    v-bind="$attrs"
+    :aria-current="isExactActive"
+    :href="href"
+    :class="classes"
+    @click="navigate"
+  >
     <slot></slot>
   </a>
 </template>

@@ -1,88 +1,207 @@
 <template>
-  <v-dialog max-width="500" v-model="dialog">
-    <v-card>
-      <v-card-title>Confirm Password</v-card-title>
+  <TransitionRoot as="template" :show="dialog">
+    <Dialog
+      static
+      as="div"
+      :open="dialog"
+      class="inset-0 z-10 fixed overflow-y-auto"
+      @close="cancel"
+    >
+      <div
+        class="flex min-h-screen text-center px-4 pt-4 pb-20 items-end justify-center sm:(p-0 block)"
+      >
+        <TransitionChild
+          as="template"
+          enter="ease-out duration-300"
+          enter-from="opacity-0"
+          enter-to="opacity-100"
+          leave="ease-in duration-200"
+          leave-from="opacity-100"
+          leave-to="opacity-0"
+        >
+          <DialogOverlay class="bg-gray-500 bg-opacity-75 inset-0 transition-opacity fixed" />
+        </TransitionChild>
 
-      <v-card-text>
-        <p class="text-body-1">Please confirm your password to continue.</p>
+        <!-- This element is to trick the browser into centering the modal contents. -->
+        <span aria-hidden="true" class="hidden sm:(h-screen inline-block align-middle)">
+          &#8203;
+        </span>
 
-        <v-text-field
-          dense
-          outlined
-          :append-icon="plainPassword ? 'mdi-eye-off' : 'mdi-eye'"
-          :error-messages="formErrors.password"
-          label="Password"
-          name="password"
-          :type="plainPassword ? 'text' : 'password'"
-          v-model="password"
-          @click:append="plainPassword = !plainPassword"
-        />
-      </v-card-text>
+        <TransitionChild
+          as="template"
+          enter="ease-out duration-300"
+          enter-from="opacity-0 translate-y-4 sm:(translate-y-0 scale-95)"
+          enter-to="opacity-100 translate-y-0 sm:scale-100"
+          leave="ease-in duration-200"
+          leave-from="opacity-100 translate-y-0 sm:scale-100"
+          leave-to="opacity-0 translate-y-4 sm:(translate-y-0 scale-95)"
+        >
+          <div
+            class="bg-white rounded-lg shadow-xl text-left px-4 transform pt-5 pb-4 transition-all inline-block align-bottom overflow-hidden sm:(max-w-lg my-8 w-full p-6 align-middle)"
+          >
+            <form @submit.prevent="confirm">
+              <div class="sm:(flex items-start)">
+                <div
+                  class="rounded-full flex mx-auto bg-info-100 flex-shrink-0 h-12 w-12 items-center justify-center sm:(h-10 mx-0 w-10)"
+                >
+                  <i-heroicons-outline-information-circle
+                    aria-hidden="true"
+                    class="h-6 text-info-600 w-6"
+                  />
+                </div>
 
-      <v-card-actions>
-        <v-btn color="primary" @click="confirm">Confirm</v-btn>
-        <v-btn outlined class="mr-2" @click="cancel">Cancel</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+                <div class="mt-3 text-center w-full sm:(mt-0 text-left ml-4)">
+                  <DialogTitle as="h3" class="font-medium text-lg text-gray-900 leading-6">
+                    Confirm Password
+                  </DialogTitle>
+
+                  <div class="space-y-4">
+                    <p class="text-sm text-gray-500">Please confirm your password to continue.</p>
+
+                    <TextInput
+                      v-model="password"
+                      required
+                      :errors="formErrors.password"
+                      name="password"
+                      placeholder="Password"
+                      :type="plainPassword ? 'text' : 'password'"
+                    >
+                      <template #leading="{ iconClass }">
+                        <i-heroicons-solid-lock-closed :class="iconClass" />
+                      </template>
+
+                      <template #trailing="{ iconClass }">
+                        <button
+                          tabindex="-1"
+                          type="button"
+                          @click.prevent="plainPassword = !plainPassword"
+                        >
+                          <i-heroicons-solid-eye-off v-if="plainPassword" :class="iconClass" />
+                          <i-heroicons-solid-eye v-else :class="iconClass" />
+                        </button>
+                      </template>
+                    </TextInput>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 sm:(flex mt-8 ml-10 pl-4)">
+                <Button
+                  :disabled="confirming"
+                  type="submit"
+                  class="w-full justify-center sm:w-auto"
+                >
+                  Confirm
+                </Button>
+
+                <Button
+                  color="none"
+                  type="button"
+                  class="mt-2 w-full justify-center sm:(mt-0 ml-2 w-auto)"
+                  @click="cancel"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </div>
+        </TransitionChild>
+      </div>
+    </Dialog>
+  </TransitionRoot>
 </template>
 
 <script lang="ts">
+import {
+  Dialog,
+  DialogOverlay,
+  DialogTitle,
+  TransitionChild,
+  TransitionRoot,
+} from '@headlessui/vue';
+import { ref, computed, defineComponent } from 'vue';
+
 import { confirmPassword, isPasswordConfirmed } from '@/api/auth';
-import { ErrorModule } from '@/store/error';
-import { Component, Vue } from 'vue-property-decorator';
+import { useErrorStore } from '@/store/error';
 
-@Component
-export default class ConfirmPassword extends Vue {
-  dialog = false;
-  confirming = true;
-  plainPassword = false;
+import Button from './Form/Button.vue';
+import TextInput from './Form/TextInput.vue';
 
-  password = '';
+export default defineComponent({
+  components: {
+    Dialog,
+    DialogOverlay,
+    DialogTitle,
+    TransitionChild,
+    TransitionRoot,
+    Button,
+    TextInput,
+  },
+  setup() {
+    const errorStore = useErrorStore();
+    const formErrors = computed(() => errorStore.formErrors);
 
-  resolve: ((value: boolean) => void) | null = null;
+    const dialog = ref(false);
+    const confirming = ref(false);
+    const plainPassword = ref(false);
 
-  get formErrors() {
-    return ErrorModule.formErrors;
-  }
+    const password = ref('');
 
-  async open() {
-    const res = await isPasswordConfirmed();
-    if (res.data.confirmed) {
-      return true;
-    }
+    const resolve = ref<((value: boolean) => void) | null>();
 
-    this.password = '';
-    this.dialog = true;
+    const reset = (resolved: boolean) => {
+      if (resolve.value) {
+        resolve.value(resolved);
+      }
 
-    return new Promise<boolean>((resolve) => (this.resolve = resolve));
-  }
+      resolve.value = null;
+      password.value = '';
+      confirming.value = false;
+      dialog.value = false;
+    };
 
-  reset(resolved: boolean) {
-    if (this.resolve) {
-      this.resolve(resolved);
-    }
+    const cancel = () => {
+      reset(false);
+    };
 
-    this.resolve = null;
-    this.password = '';
-    this.confirming = false;
-    this.dialog = false;
-  }
+    const confirm = async () => {
+      confirming.value = true;
 
-  cancel() {
-    this.reset(false);
-  }
+      try {
+        await confirmPassword(password.value);
 
-  async confirm() {
-    this.confirming = true;
+        reset(true);
+      } catch (err) {
+        //
+      }
 
-    try {
-      await confirmPassword(this.password);
+      confirming.value = false;
+    };
 
-      this.reset(true);
-    } catch (err) {
-      //
-    }
-  }
-}
+    const open = async () => {
+      const res = await isPasswordConfirmed();
+      if (res.data.confirmed) {
+        return true;
+      }
+
+      password.value = '';
+      dialog.value = true;
+
+      return new Promise<boolean>((pResolve) => (resolve.value = pResolve));
+    };
+
+    return {
+      formErrors,
+      dialog,
+      confirming,
+      password,
+      plainPassword,
+      cancel,
+      confirm,
+
+      // exposed
+      open,
+    };
+  },
+});
 </script>

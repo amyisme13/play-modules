@@ -1,24 +1,34 @@
 <template>
-  <button :type="type" :class="buttonClass">
+  <button v-if="tag === 'button'" :type="type" :class="buttonClass">
     <slot></slot>
   </button>
+
+  <AppLink v-else :to="to" :class="buttonClass">
+    <slot></slot>
+  </AppLink>
 </template>
 
 <script setup lang="ts">
 import cn from 'classnames';
 import { computed, ButtonHTMLAttributes } from 'vue';
+import { RouteLocationRaw } from 'vue-router';
+import AppLink from '../AppLink.vue';
 
 const props = withDefaults(
   defineProps<{
+    tag?: 'button' | 'link';
     type?: ButtonHTMLAttributes['type'];
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     color?: 'primary' | 'success' | 'error' | 'none';
+    to?: RouteLocationRaw;
     block?: boolean;
   }>(),
   {
+    tag: 'button',
     type: 'button',
     size: 'md',
     color: 'primary',
+    to: () => 'home',
   }
 );
 

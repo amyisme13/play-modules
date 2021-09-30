@@ -27,6 +27,7 @@ export interface AuthUser {
   id: number;
   name: string;
   email: string;
+  avatar: string;
   two_factor_enabled: boolean;
   permissions: string[];
   roles: string[];

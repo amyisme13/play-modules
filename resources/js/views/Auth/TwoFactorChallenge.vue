@@ -1,7 +1,7 @@
 <template>
   <AuthCard>
     <template #header>
-      <h2 class="font-extrabold text-center text-3xl text-gray-900">Forgot password</h2>
+      <h2 class="font-extrabold text-center text-3xl text-gray-900">Two Factor Challenge</h2>
     </template>
 
     <p v-if="usingRecovery" class="text-gray-700 text-sm mb-4">

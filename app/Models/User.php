@@ -36,4 +36,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the avatar
+     *
+     * @return string
+     */
+    public function getAvatarAttribute()
+    {
+        return "https://ui-avatars.com/api/?name={$this->name}";
+    }
 }

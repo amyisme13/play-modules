@@ -1,93 +1,118 @@
 <template>
-  <v-card>
-    <v-card-title>Change Password</v-card-title>
+  <form class="divide-y divide-gray-200" @submit.prevent="submit">
+    <div class="py-6 px-4 sm:p-6 lg:pb-8">
+      <div>
+        <h2 class="text-lg leading-6 font-medium text-gray-900">Change Password</h2>
+        <p class="mt-1 text-sm text-gray-500">
+          Ensure your account is using a long, random password to stay secure.
+        </p>
+      </div>
 
-    <v-card-text>
-      <v-form>
-        <v-text-field
-          dense
-          outlined
-          :append-icon="plainPassword ? 'mdi-eye-off' : 'mdi-eye'"
-          :error-messages="formErrors.current_password"
-          label="Current Password"
-          name="current_password"
-          prepend-inner-icon="mdi-lock-clock"
-          :type="plainPassword ? 'text' : 'password'"
-          v-model="current"
-          @click:append="plainPassword = !plainPassword"
-        />
+      <div class="mt-6 grid grid-cols-12 gap-6">
+        <div class="col-span-12 sm:col-span-7">
+          <TextInput
+            v-model="current"
+            required
+            :errors="formErrors.current_password"
+            label="Current Password"
+            name="current_password"
+            :type="plainPassword ? 'text' : 'password'"
+          >
+            <template #trailing="{ iconClass }">
+              <button tabindex="-1" type="button" @click.prevent="plainPassword = !plainPassword">
+                <i-heroicons-solid-eye-off v-if="plainPassword" :class="iconClass" />
+                <i-heroicons-solid-eye v-else :class="iconClass" />
+              </button>
+            </template>
+          </TextInput>
+        </div>
 
-        <v-text-field
-          dense
-          outlined
-          :append-icon="plainPassword ? 'mdi-eye-off' : 'mdi-eye'"
-          :error-messages="formErrors.password"
-          label="New Password"
-          name="password"
-          prepend-inner-icon="mdi-lock"
-          :type="plainPassword ? 'text' : 'password'"
-          v-model="password"
-          @click:append="plainPassword = !plainPassword"
-        />
+        <div class="col-span-12 sm:col-span-7">
+          <TextInput
+            v-model="password"
+            required
+            :errors="formErrors.password"
+            label="Password"
+            name="password"
+            :type="plainPassword ? 'text' : 'password'"
+          >
+            <template #trailing="{ iconClass }">
+              <button tabindex="-1" type="button" @click.prevent="plainPassword = !plainPassword">
+                <i-heroicons-solid-eye-off v-if="plainPassword" :class="iconClass" />
+                <i-heroicons-solid-eye v-else :class="iconClass" />
+              </button>
+            </template>
+          </TextInput>
+        </div>
 
-        <v-text-field
-          dense
-          outlined
-          :error-messages="formErrors.password_confirmation"
-          label="Confirm Password"
-          name="password_confirmation"
-          prepend-inner-icon="mdi-lock-check"
-          :type="plainPassword ? 'text' : 'password'"
-          v-model="confirm"
-        />
-      </v-form>
-    </v-card-text>
+        <div class="col-span-12 sm:col-span-7">
+          <TextInput
+            v-model="confirm"
+            required
+            label="Confirm Password"
+            name="password_confirmation"
+            :type="plainPassword ? 'text' : 'password'"
+          />
+        </div>
+      </div>
+    </div>
 
-    <v-card-actions>
-      <v-btn color="primary" :loading="loading" @click="submit">Submit</v-btn>
-    </v-card-actions>
-  </v-card>
+    <div class="divide-y divide-gray-200">
+      <div class="py-4 px-4 flex justify-end sm:px-6">
+        <Button color="none" @click="cancel"> Cancel </Button>
+
+        <Button :disabled="loading" type="submit" class="ml-5"> Save </Button>
+      </div>
+    </div>
+  </form>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
 
 import { updatePassword } from '@/api/auth';
-import { ErrorModule } from '@/store/error';
+import Button from '@/components/Form/Button.vue';
+import TextInput from '@/components/Form/TextInput.vue';
+import { useAppStore } from '@/store';
+import { useErrorStore } from '@/store/error';
 
-@Component
-export default class UpdatePassword extends Vue {
-  loading = false;
-  plainPassword = false;
+const errorStore = useErrorStore();
+const formErrors = computed(() => errorStore.formErrors);
 
-  current = '';
-  password = '';
-  confirm = '';
+const loading = ref(false);
+const plainPassword = ref(false);
 
-  get formErrors() {
-    return ErrorModule.formErrors;
+const current = ref('');
+const password = ref('');
+const confirm = ref('');
+
+const cancel = () => {
+  current.value = '';
+  password.value = '';
+  confirm.value = '';
+};
+
+const app = useAppStore();
+const submit = async () => {
+  loading.value = true;
+
+  try {
+    await updatePassword({
+      current_password: current.value,
+      password: password.value,
+      password_confirmation: confirm.value,
+    });
+
+    app.notify({
+      style: 'success',
+      text: 'Password updated.',
+    });
+
+    cancel();
+  } catch (err) {
+    //
   }
 
-  async submit() {
-    this.loading = true;
-
-    try {
-      await updatePassword({
-        current_password: this.current,
-        password: this.password,
-        password_confirmation: this.confirm,
-      });
-
-      this.$snackbar('Password updated.', 'success');
-
-      this.current = '';
-      this.password = '';
-      this.confirm = '';
-    } catch (err) {
-      //
-    }
-
-    this.loading = false;
-  }
-}
+  loading.value = false;
+};
 </script>

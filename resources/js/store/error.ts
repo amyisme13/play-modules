@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 
+import { useAppStore } from '@/store';
 import { LaravelError } from '@/types/api';
 
 interface State {
@@ -32,7 +33,7 @@ export const useErrorStore = defineStore('error', {
 
       const snackbarStatuses = [403, 429, 500];
       if (snackbarStatuses.includes(status)) {
-        // show snackbar
+        useAppStore().notify({ style: 'error', text: error.message });
       }
     },
   },
