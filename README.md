@@ -26,8 +26,8 @@ Follow the steps mentioned below to install and run the project.
 5. Update the database configuration in `.env`
 6. Migrate the database by running `php artisan migrate`
 7. Link storage directory `php artisan storage:link`
-8. Run `yarn install` to install js packages
-9. Run `yarn dev`, `yarn watch`  or `yarn prod` to generate the frontend assets
+8. Run `pnpm install` to install js packages
+9. Run `pnpm run dev` or `pnpm run build` to generate the frontend assets
 
 If you have docker you can run `sail up -d` to start the webserver and other services. [Learn more](https://laravel.com/docs/8.x/sail).
 
