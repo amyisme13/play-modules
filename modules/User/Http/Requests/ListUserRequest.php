@@ -27,7 +27,6 @@ class ListUserRequest extends FormRequest
     {
         return [
             'page' => ['sometimes', 'numeric'],
-            'per_page' => ['sometimes', 'numeric', 'max:100'],
             'search' => ['sometimes', 'string'],
             'order_by' => ['sometimes', 'string'],
             'order_desc' => ['sometimes', 'boolean'],

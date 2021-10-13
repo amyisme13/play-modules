@@ -9,6 +9,11 @@
   <title>Laravel</title>
 
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <style>
+    html {
+      overflow-y: scroll;
+    }
+  </style>
 
   @vite
 </head>

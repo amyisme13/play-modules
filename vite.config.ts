@@ -10,6 +10,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@/': `${path.resolve(__dirname, 'resources/js')}/`,
+      '@user/': `${path.resolve(__dirname, 'modules/User/Resources/js')}/`,
     },
   },
 }).withPlugins(

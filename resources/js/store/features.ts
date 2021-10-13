@@ -6,8 +6,6 @@ import { AppFeature, AppMenu, AppMenuHeader } from '@/types';
 import { AuthUser } from '@/types/api';
 import { useAuthStore } from './auth';
 
-type Menus = (AppMenu | AppMenuHeader)[];
-
 function filterMenus(user: AuthUser | null, menus: AppMenu[]) {
   if (user?.roles.includes('Super Admin')) {
     return menus;
@@ -29,7 +27,7 @@ interface State {
   active: string[];
   features: AppFeature[];
   routes: RouteRecordRaw[];
-  menus: Menus;
+  menus: AppMenuHeader[];
 }
 
 export const useFeaturesStore = defineStore('features', {
@@ -74,7 +72,7 @@ export const useFeaturesStore = defineStore('features', {
         }
 
         return acc;
-      }, [] as Menus);
+      }, [] as AppMenuHeader[]);
 
       this.menus = menus;
     },

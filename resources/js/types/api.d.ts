@@ -12,6 +12,8 @@ export interface PaginationMeta {
   last_page: number;
   per_page: number;
   total: number;
+  from: number;
+  to: number;
 }
 
 export interface Paginated<T> {

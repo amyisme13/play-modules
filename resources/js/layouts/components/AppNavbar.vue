@@ -1,9 +1,5 @@
 <template>
-  <Popover
-    v-slot="{ open }"
-    as="header"
-    class="bg-gradient-to-r from-primary-800 to-primary-600 pb-52"
-  >
+  <Popover v-slot="{ open }" as="header" class="bg-gradient-to-r from-primary-800 to-primary-600">
     <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
       <div
         class="flex h-16 relative items-center justify-between lg:(border-b border-white border-opacity-20)"
@@ -28,7 +24,7 @@
         </div>
 
         <div class="flex flex-1 px-2 justify-center lg:(ml-6 justify-end)">
-          <!-- TODO: Search actions (module) -->
+          <!-- TODO: Search modules -->
           <div class="max-w-lg w-full lg:max-w-xs">
             <label for="search" class="sr-only">Search</label>
             <div class="text-primary-100 relative focus-within:text-gray-400">
@@ -145,6 +141,7 @@
           leave-to="opacity-0 scale-95"
         >
           <PopoverPanel
+            v-slot="{ close }"
             focus
             static
             class="mx-auto w-full max-w-3xl p-2 transform origin-top inset-x-0 transition top-0 z-30 absolute"
@@ -174,6 +171,7 @@
                     :key="item.label"
                     :to="item.to"
                     class="rounded-md font-medium text-base py-2 px-3 text-gray-900 block hover:(bg-gray-100 text-gray-800)"
+                    @click="close"
                   >
                     {{ item.label }}
                   </AppLink>
@@ -208,9 +206,17 @@
                     :key="item.label"
                     :to="item.to"
                     class="rounded-md font-medium text-base py-2 px-3 text-gray-900 block hover:(bg-gray-100 text-gray-800)"
+                    @click="close"
                   >
                     {{ item.label }}
                   </AppLink>
+
+                  <button
+                    class="rounded-md font-medium text-base text-left w-full py-2 px-3 text-gray-900 block hover:(bg-gray-100 text-gray-800)"
+                    @click="logout"
+                  >
+                    Logout
+                  </button>
                 </div>
               </div>
             </div>
@@ -251,8 +257,7 @@ const logout = async () => {
 
 const navbarMenus = [
   { label: 'Home', to: { name: 'home' } },
-  // TODO: Modules
-  { label: 'Modules', to: 'modules' },
+  { label: 'Modules', to: { name: 'modules' } },
 ];
 
 const userMenus = [{ label: 'Manage Account', to: { name: 'account-settings' } }];

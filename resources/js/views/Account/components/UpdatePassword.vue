@@ -2,14 +2,14 @@
   <form class="divide-y divide-gray-200" @submit.prevent="submit">
     <div class="py-6 px-4 sm:p-6 lg:pb-8">
       <div>
-        <h2 class="text-lg leading-6 font-medium text-gray-900">Change Password</h2>
+        <h2 class="font-medium text-lg text-gray-900 leading-6">Change Password</h2>
         <p class="mt-1 text-sm text-gray-500">
           Ensure your account is using a long, random password to stay secure.
         </p>
       </div>
 
-      <div class="mt-6 grid grid-cols-12 gap-6">
-        <div class="col-span-12 sm:col-span-7">
+      <div class="mt-6 grid gap-6 grid-cols-3">
+        <div class="col-span-3 sm:col-span-2">
           <TextInput
             v-model="current"
             required
@@ -27,7 +27,7 @@
           </TextInput>
         </div>
 
-        <div class="col-span-12 sm:col-span-7">
+        <div class="col-span-3 sm:col-span-2">
           <TextInput
             v-model="password"
             required
@@ -45,7 +45,7 @@
           </TextInput>
         </div>
 
-        <div class="col-span-12 sm:col-span-7">
+        <div class="col-span-3 sm:col-span-2">
           <TextInput
             v-model="confirm"
             required
@@ -58,10 +58,14 @@
     </div>
 
     <div class="divide-y divide-gray-200">
-      <div class="py-4 px-4 flex justify-end sm:px-6">
-        <Button color="none" @click="cancel"> Cancel </Button>
+      <div class="flex flex-col space-y-2 py-4 px-4 justify-end sm:(px-6 flex-row space-y-0)">
+        <Button color="none" class="w-full justify-center sm:w-auto" @click="cancel">
+          Cancel
+        </Button>
 
-        <Button :disabled="loading" type="submit" class="ml-5"> Save </Button>
+        <Button :disabled="loading" type="submit" class="w-full justify-center sm:(w-auto ml-5)">
+          Save
+        </Button>
       </div>
     </div>
   </form>

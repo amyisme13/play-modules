@@ -3,9 +3,9 @@
     <PageHeader>Account Settings</PageHeader>
 
     <div class="bg-white rounded-lg shadow overflow-hidden">
-      <div class="divide-y divide-gray-200 lg:(grid grid-cols-12 divide-y-0 divide-x)">
+      <div class="divide-y divide-gray-200 lg:(grid grid-cols-4 divide-y-0 divide-x)">
         <TabGroup vertical as="template">
-          <aside class="py-6 lg:col-span-3">
+          <aside class="py-6 lg:col-span-1">
             <TabList as="nav" class="space-y-1">
               <Tab v-for="item in menus" :key="item.label" v-slot="{ selected }" as="template">
                 <button
@@ -35,13 +35,13 @@
           </aside>
 
           <TabPanels as="template">
-            <TabPanel class="lg:col-span-9">
+            <TabPanel class="lg:col-span-3">
               <UpdateProfile />
             </TabPanel>
-            <TabPanel class="lg:col-span-9">
+            <TabPanel class="lg:col-span-3">
               <UpdatePassword />
             </TabPanel>
-            <TabPanel class="lg:col-span-9">
+            <TabPanel class="lg:col-span-3">
               <TwoFactorAuth />
             </TabPanel>
           </TabPanels>

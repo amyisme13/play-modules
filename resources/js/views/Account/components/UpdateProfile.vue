@@ -2,36 +2,32 @@
   <form class="divide-y divide-gray-200" @submit.prevent="submit">
     <div class="py-6 px-4 sm:p-6 lg:pb-8">
       <div>
-        <h2 class="text-lg leading-6 font-medium text-gray-900">Profile</h2>
+        <h2 class="font-medium text-lg text-gray-900 leading-6">Profile</h2>
         <p class="mt-1 text-sm text-gray-500">
           Update your account's profile information and email address.
         </p>
       </div>
 
-      <div class="mt-6 flex flex-col lg:flex-row">
+      <div class="flex flex-col mt-6 lg:flex-row">
         <!-- TODO: Photo -->
-        <div class="mb-6 flex-grow lg:(mb-0 mr-6 flex-grow-0 flex-shrink-0)">
-          <p aria-hidden="true" class="text-sm font-medium text-gray-700">Photo</p>
+        <div class="flex-grow mb-6 lg:(mb-0 mr-6 flex-grow-0 flex-shrink-0)">
+          <p aria-hidden="true" class="font-medium text-sm text-gray-700">Photo</p>
           <div class="mt-1 lg:hidden">
             <div class="flex items-center">
               <div
                 aria-hidden="true"
-                class="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12"
+                class="rounded-full flex-shrink-0 h-12 w-12 inline-block overflow-hidden"
               >
-                <img
-                  class="rounded-full h-full w-full"
-                  src="https://ui-avatars.com/api/?background=random&name=XD"
-                  alt=""
-                />
+                <img alt="user profile photo" :src="avatar" class="rounded-full h-full w-full" />
               </div>
 
-              <div class="ml-5 rounded-md shadow-sm">
+              <div class="rounded-md shadow-sm ml-5">
                 <div
-                  class="group relative border border-gray-300 rounded-md py-2 px-3 flex items-center justify-center hover:bg-gray-50 focus-within:(ring-2 ring-offset-2 ring-primary-500)"
+                  class="border rounded-md flex border-gray-300 py-2 px-3 group relative items-center justify-center hover:bg-gray-50 focus-within:(ring-2 ring-offset-2 ring-primary-500)"
                 >
                   <label
                     for="user-photo"
-                    class="relative text-sm leading-4 font-medium text-gray-700 pointer-events-none"
+                    class="font-medium text-sm text-gray-700 leading-4 relative pointer-events-none"
                   >
                     <span>Change</span>
                     <span class="sr-only"> user photo</span>
@@ -41,22 +37,18 @@
                     id="user-photo"
                     name="user-photo"
                     type="file"
-                    class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md"
+                    class="rounded-md cursor-pointer h-full border-gray-300 w-full opacity-0 absolute"
                   />
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="hidden relative rounded-full overflow-hidden lg:block">
-            <img
-              class="relative rounded-full w-40 h-40"
-              src="https://ui-avatars.com/api/?background=random&name=XD"
-              alt=""
-            />
+          <div class="rounded-full hidden relative overflow-hidden lg:block">
+            <img alt="user profile photo" :src="avatar" class="rounded-full h-40 w-40 relative" />
             <label
               for="user-photo"
-              class="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100"
+              class="bg-black flex font-medium h-full bg-opacity-75 text-sm text-white w-full opacity-0 inset-0 absolute items-center justify-center hover:opacity-100 focus-within:opacity-100"
             >
               <span>Change</span>
               <span class="sr-only">user photo</span>
@@ -64,13 +56,13 @@
                 id="user-photo"
                 name="user-photo"
                 type="file"
-                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md"
+                class="rounded-md cursor-pointer h-full border-gray-300 w-full opacity-0 inset-0 absolute"
               />
             </label>
           </div>
         </div>
 
-        <div class="flex-grow max-w-[50%] space-y-6">
+        <div class="flex-grow space-y-6 md:max-w-[50%]">
           <TextInput v-model="name" required :errors="formErrors.name" label="Name" name="name" />
 
           <TextInput
@@ -86,10 +78,14 @@
     </div>
 
     <div class="divide-y divide-gray-200">
-      <div class="py-4 px-4 flex justify-end sm:px-6">
-        <Button color="none" @click="loadForm"> Cancel </Button>
+      <div class="flex flex-col space-y-2 py-4 px-4 justify-end sm:(px-6 flex-row space-y-0)">
+        <Button color="none" class="w-full justify-center sm:w-auto" @click="loadForm">
+          Cancel
+        </Button>
 
-        <Button :disabled="loading" type="submit" class="ml-5"> Save </Button>
+        <Button :disabled="loading" type="submit" class="w-full justify-center sm:(w-auto ml-5)">
+          Save
+        </Button>
       </div>
     </div>
   </form>
@@ -112,12 +108,14 @@ const loading = ref(false);
 
 const name = ref('');
 const email = ref('');
+const avatar = ref('');
 
 const auth = useAuthStore();
 const loadForm = () => {
   if (auth.user) {
     name.value = auth.user.name;
     email.value = auth.user.email;
+    avatar.value = auth.user.avatar;
   }
 };
 loadForm();

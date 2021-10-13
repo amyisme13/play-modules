@@ -1,90 +1,4 @@
 <template>
-  <!-- <v-card>
-    <v-card-title>Two Factor Auth</v-card-title>
-
-    <v-card-text v-if="user && user.two_factor_enabled">
-      <p class="text--darken-3 grey--text">You have enabled two factor authentication.</p>
-      <p>
-        When two factor authentication is enabled, you will be prompted for a secure, random token
-        during authentication. You may retrieve this token from your phone's Google Authenticator
-        application.
-      </p>
-
-      <div v-if="qrCode">
-        <p>
-          Two factor authentication is now enabled. Scan the following QR code using your phone's
-          authenticator application.
-        </p>
-
-        <v-sheet height="250" class="text-center" v-html="qrCode"></v-sheet>
-      </div>
-
-      <div v-if="recoveryCodes.length > 0" class="mb-4">
-        <p>
-          Store these recovery codes in a secure password manager. They can be used to recover
-          access to your account if your two factor authentication device is lost.
-        </p>
-
-        <v-sheet class="font-mono black--text pa-4" color="grey lighten-3">
-          <div v-for="code in recoveryCodes" :key="code">
-            {{ code }}
-          </div>
-        </v-sheet>
-      </div>
-    </v-card-text>
-
-    <v-card-text v-else>
-      <p class="text--darken-3 grey--text">You have not enabled two factor authentication.</p>
-      <p>
-        When two factor authentication is enabled, you will be prompted for a secure, random token
-        during authentication. You may retrieve this token from your phone's Google Authenticator
-        application.
-      </p>
-    </v-card-text>
-
-    <v-card-actions>
-      <v-sheet
-        v-if="user && user.two_factor_enabled"
-        class="flex-column flex-md-row d-flex align-center"
-        :width="isMobile ? '100%' : undefined"
-      >
-        <v-btn
-          v-if="recoveryCodes.length === 0"
-          outlined
-          :block="isMobile"
-          :loading="loadingCodes"
-          @click="showRecoveryCodes"
-        >
-          Show Recovery Codes
-        </v-btn>
-
-        <v-btn
-          v-else
-          outlined
-          :block="isMobile"
-          :loading="loadingCodes"
-          @click="regenerateRecoveryCodes"
-        >
-          Regenerate Recovery Codes
-        </v-btn>
-
-        <v-btn
-          :block="isMobile"
-          class="mt-2 mt-md-0 ml-md-4"
-          color="secondary"
-          :loading="loading"
-          @click="disable2FA"
-        >
-          Disable 2FA
-        </v-btn>
-      </v-sheet>
-
-      <v-btn v-else color="primary" :loading="loading" @click="enable2FA">Enable 2FA</v-btn>
-    </v-card-actions>
-
-    <confirm-password ref="confirm" />
-  </v-card> -->
-
   <div v-bind="$attrs" class="divide-y divide-gray-200">
     <div class="py-6 px-4 sm:p-6 lg:pb-8">
       <div>
@@ -94,8 +8,8 @@
         </p>
       </div>
 
-      <div class="mt-6 grid gap-6 grid-cols-12">
-        <div class="col-span-12">
+      <div class="mt-6 grid gap-6 grid-cols-1">
+        <div>
           <p v-if="twoFactorEnabled" class="font-medium text-sm text-gray-700">
             You have enabled two factor authentication.
           </p>
@@ -113,7 +27,7 @@
 
         <template v-if="twoFactorEnabled">
           <template v-if="qrCode">
-            <div class="space-y-4 col-span-12">
+            <div class="space-y-4">
               <p class="font-medium text-sm text-gray-700">
                 Two factor authentication is now enabled. Scan the following QR code using your
                 phone's authenticator application.
@@ -124,13 +38,13 @@
           </template>
 
           <template v-if="recoveryCodes.length > 0">
-            <div class="space-y-4 col-span-12">
-              <p class="text-sm text-gray-700 font-medium">
+            <div class="space-y-4">
+              <p class="font-medium text-sm text-gray-700">
                 Store these recovery codes in a secure password manager. They can be used to recover
                 access to your account if your two factor authentication device is lost.
               </p>
 
-              <div class="rounded-lg font-mono w-56 bg-gray-100 text-sm grid p-4 gap-1">
+              <div class="rounded-lg font-mono bg-gray-100 text-sm grid p-4 w-56 gap-1">
                 <div v-for="code in recoveryCodes" :key="code">
                   {{ code }}
                 </div>
@@ -142,27 +56,46 @@
     </div>
 
     <div class="divide-y divide-gray-200">
-      <div class="flex py-4 px-4 justify-end sm:px-6">
+      <div class="flex flex-col space-y-2 py-4 px-4 justify-end sm:(px-6 flex-row space-y-0)">
         <template v-if="twoFactorEnabled">
           <Button
             v-if="recoveryCodes.length === 0"
             color="none"
             :disabled="loadingCodes"
+            class="w-full justify-center sm:w-auto"
             @click="showRecoveryCodes"
           >
             Show Recovery Codes
           </Button>
 
-          <Button v-else color="none" :disabled="loadingCodes" @click="regenerateRecoveryCodes">
+          <Button
+            v-else
+            color="none"
+            :disabled="loadingCodes"
+            class="w-full justify-center sm:w-auto"
+            @click="regenerateRecoveryCodes"
+          >
             Regenerate Recovery Codes
           </Button>
 
-          <Button color="error" :disabled="loading" class="ml-5" @click="disable2FA">
+          <Button
+            color="error"
+            :disabled="loading"
+            class="w-full justify-center sm:(w-auto ml-5)"
+            @click="disable2FA"
+          >
             Disable
           </Button>
         </template>
 
-        <Button v-else :disabled="loading" class="ml-5" @click="enable2FA"> Enable </Button>
+        <Button
+          v-else
+          :disabled="loading"
+          class="w-full justify-center sm:(w-auto ml-5)"
+          @click="enable2FA"
+        >
+          Enable
+        </Button>
       </div>
     </div>
   </div>

@@ -4,7 +4,6 @@
     class="flex py-6 px-4 inset-0 fixed items-end pointer-events-none sm:(p-6 items-start)"
   >
     <div class="flex flex-col space-y-4 w-full items-center sm:items-end">
-      <!-- Notification panel, dynamically insert this into the live region when it needs to be displayed -->
       <transition-group
         enter-active-class="transform ease-out duration-300 transition"
         enter-from-class="opacity-0"

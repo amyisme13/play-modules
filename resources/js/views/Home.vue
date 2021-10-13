@@ -33,36 +33,7 @@
             Shortcuts
           </h2>
 
-          <div class="rounded-lg sm:(grid grid-cols-2 gap-4)">
-            <div
-              class="bg-white rounded-md shadow p-4 group relative overflow-hidden focus-within:(ring-inset ring-2 ring-primary-500)"
-            >
-              <div class="flex space-x-4 items-center">
-                <div
-                  class="rounded flex bg-primary-200 flex-shrink-0 h-12 w-12 justify-center items-center"
-                >
-                  <i-heroicons-solid-user class="h-6 text-primary-600 w-6" />
-                </div>
-
-                <div class="flex-grow">
-                  <p class="text-sm text-gray-500 leading-4">User</p>
-                  <h3 class="font-medium text-gray-900">
-                    <AppLink to="account" class="focus:outline-none">
-                      <!-- Extend touch target to entire panel -->
-                      <span class="inset-0 absolute" aria-hidden="true"></span>
-                      User Management
-                    </AppLink>
-                  </h3>
-                </div>
-
-                <div class="flex flex-shrink-0 justify-center items-center">
-                  <i-heroicons-outline-chevron-right
-                    class="h-8 text-gray-400 w-8 group-hover:text-gray-500"
-                  />
-                </div>
-              </div>
-            </div>
-
+          <div class="grid grid-cols-1 gap-4 sm:(grid grid-cols-2 gap-4)">
             <div
               class="border border-dashed rounded-md border-2 border-gray-300 p-4 group relative overflow-hidden focus-within:(border-primary-500 border-solid)"
             >
@@ -141,7 +112,7 @@
               </div>
 
               <div class="mt-6">
-                <Button block color="none" tag="link" to="news"> View All </Button>
+                <Button block color="none" to="news"> View All </Button>
               </div>
             </div>
           </div>

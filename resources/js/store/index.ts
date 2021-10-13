@@ -13,11 +13,13 @@ interface StoredNotification extends Notification {
 
 interface State {
   notifications: StoredNotification[];
+  loading: boolean;
 }
 
 export const useAppStore = defineStore('app', {
   state: (): State => ({
     notifications: [],
+    loading: false,
   }),
 
   actions: {
