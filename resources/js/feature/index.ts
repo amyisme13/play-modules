@@ -5,6 +5,7 @@ import routes from './routes';
 
 import HeartIcon from '~icons/heroicons-outline/heart';
 import HomeIcon from '~icons/heroicons-outline/home';
+import TagIcon from '~icons/heroicons-outline/tag';
 
 const feature: AppFeature = {
   name: 'Core',
@@ -16,12 +17,12 @@ const feature: AppFeature = {
       routeName: 'home',
       icon: markRaw(HomeIcon),
     },
-    // {
-    //   label: 'Role Management',
-    //   routeName: 'role-management',
-    //   icon: 'mdi-account-lock',
-    //   permissions: ['Manage permissions'],
-    // },
+    {
+      label: 'Role Management',
+      routeName: 'role-management',
+      icon: markRaw(TagIcon),
+      permissions: ['Manage permissions'],
+    },
   ],
 };
 

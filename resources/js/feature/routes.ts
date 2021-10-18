@@ -78,14 +78,14 @@ const routes: RouteRecordRaw[] = [
           noOverlapHeader: true,
         },
       },
-      // {
-      //   path: 'roles',
-      //   name: 'role-management',
-      //   component: () => import( '../views/Roles/Index.vue'),
-      //   meta: {
-      //     requireAuth: true,
-      //   },
-      // },
+      {
+        path: 'roles',
+        name: 'role-management',
+        component: () => import('../views/Roles/Index.vue'),
+        meta: {
+          requireAuth: true,
+        },
+      },
     ],
   },
 ];

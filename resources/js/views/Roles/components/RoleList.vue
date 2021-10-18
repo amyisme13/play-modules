@@ -1,31 +1,34 @@
 <template>
-  <v-card>
-    <v-card-title>Roles</v-card-title>
+  <nav class="space-y-1">
+    <button
+      v-for="item in roles"
+      :key="item.name"
+      :aria-current="isRoleSelected(item) ? 'page' : undefined"
+      class="rounded-md flex font-medium text-sm w-full py-2 px-3 items-center"
+      :class="[
+        isRoleSelected(item)
+          ? 'bg-primary-50 text-primary-700'
+          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+      ]"
+      @click="selectRole(item)"
+    >
+      <span class="truncate"> {{ item.name }} </span>
 
-    <v-skeleton-loader v-if="loading" type="list-item@2" />
-
-    <v-list v-else>
-      <v-list-item v-for="role in roles" :key="role.id" @click="$emit('select', role)">
-        <v-list-item-title>{{ role.name }}</v-list-item-title>
-        <v-list-item-action>
-          <v-icon>mdi-chevron-right</v-icon>
-        </v-list-item-action>
-      </v-list-item>
-    </v-list>
-  </v-card>
+      <i-heroicons-outline-chevron-right v-show="isRoleSelected(item)" class="ml-auto h-4 w-4" />
+    </button>
+  </nav>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-
+<script setup lang="ts">
 import { Role } from '@/types/api';
 
-@Component
-export default class RoleList extends Vue {
-  @Prop({ required: true })
-  roles!: Role[];
+const props = defineProps<{
+  roles: Role[];
+  selected?: Role;
+}>();
 
-  @Prop({ default: false })
-  loading!: boolean;
-}
+const isRoleSelected = (role: Role) => props.selected?.id === role.id;
+
+const emit = defineEmits<{ (e: 'select', role: Role): void }>();
+const selectRole = (role: Role) => emit('select', role);
 </script>

@@ -55,48 +55,46 @@
       </div>
     </div>
 
-    <div class="divide-y divide-gray-200">
-      <div class="flex flex-col space-y-2 py-4 px-4 justify-end sm:(px-6 flex-row space-y-0)">
-        <template v-if="twoFactorEnabled">
-          <Button
-            v-if="recoveryCodes.length === 0"
-            color="none"
-            :disabled="loadingCodes"
-            class="w-full justify-center sm:w-auto"
-            @click="showRecoveryCodes"
-          >
-            Show Recovery Codes
-          </Button>
-
-          <Button
-            v-else
-            color="none"
-            :disabled="loadingCodes"
-            class="w-full justify-center sm:w-auto"
-            @click="regenerateRecoveryCodes"
-          >
-            Regenerate Recovery Codes
-          </Button>
-
-          <Button
-            color="error"
-            :disabled="loading"
-            class="w-full justify-center sm:(w-auto ml-5)"
-            @click="disable2FA"
-          >
-            Disable
-          </Button>
-        </template>
+    <div class="flex flex-col space-y-2 py-4 px-4 justify-end sm:(px-6 flex-row space-y-0)">
+      <template v-if="twoFactorEnabled">
+        <Button
+          v-if="recoveryCodes.length === 0"
+          color="none"
+          :disabled="loadingCodes"
+          class="w-full justify-center sm:w-auto"
+          @click="showRecoveryCodes"
+        >
+          Show Recovery Codes
+        </Button>
 
         <Button
           v-else
+          color="none"
+          :disabled="loadingCodes"
+          class="w-full justify-center sm:w-auto"
+          @click="regenerateRecoveryCodes"
+        >
+          Regenerate Recovery Codes
+        </Button>
+
+        <Button
+          color="error"
           :disabled="loading"
           class="w-full justify-center sm:(w-auto ml-5)"
-          @click="enable2FA"
+          @click="disable2FA"
         >
-          Enable
+          Disable
         </Button>
-      </div>
+      </template>
+
+      <Button
+        v-else
+        :disabled="loading"
+        class="w-full justify-center sm:(w-auto ml-5)"
+        @click="enable2FA"
+      >
+        Enable
+      </Button>
     </div>
   </div>
 
@@ -113,7 +111,7 @@ import {
   get2FARecoveryCodes,
   regenerate2FARecoveryCodes,
 } from '@/api/auth';
-import ConfirmPassword from '@/components/ConfirmPassword.vue';
+import ConfirmPassword from '@/components/Dialog/ConfirmPassword.vue';
 import Button from '@/components/Form/Button.vue';
 import { useAppStore } from '@/store';
 import { useAuthStore } from '@/store/auth';

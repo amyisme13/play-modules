@@ -1,68 +1,89 @@
 <template>
-  <v-dialog v-model="dialog" width="500">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn block color="primary" v-bind="attrs" v-on="on">Create Role</v-btn>
-    </template>
+  <BaseDialog v-model="modelProxy">
+    <form @submit.prevent="submitRole">
+      <div class="text-center w-full space-y-4 sm:text-left">
+        <DialogTitle as="h3" class="font-medium text-lg text-gray-900 leading-6">
+          Create Role
+        </DialogTitle>
 
-    <v-card>
-      <v-card-title> Create Role </v-card-title>
-
-      <v-card-text>
-        <v-text-field
-          dense
-          outlined
-          :error-messages="formErrors.name"
-          label="Name"
-          v-model="name"
+        <TextInput
+          v-model="newRole"
+          required
+          :errors="formErrors.name"
+          label="Role name"
+          name="name"
         />
-      </v-card-text>
+      </div>
 
-      <v-card-actions class="mt-n4">
-        <v-btn color="primary" @click="createRole" :loading="creating"> Submit </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      <div class="mt-6 sm:(flex mt-8)">
+        <Button :disabled="creating" type="submit" class="w-full justify-center sm:w-auto">
+          Create
+        </Button>
+
+        <Button
+          color="none"
+          type="button"
+          class="mt-2 w-full justify-center sm:(mt-0 ml-2 w-auto)"
+          @click="modelProxy = false"
+        >
+          Cancel
+        </Button>
+      </div>
+    </form>
+  </BaseDialog>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { DialogTitle } from '@headlessui/vue';
+import { ref, computed } from 'vue';
+
 import { createRole } from '@/api/roles';
-import { ErrorModule } from '@/store/error';
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import BaseDialog from '@/components/Dialog/BaseDialog.vue';
+import Button from '@/components/Form/Button.vue';
+import TextInput from '@/components/Form/TextInput.vue';
+import { useAppStore } from '@/store';
+import { useErrorStore } from '@/store/error';
+import { Role } from '@/types/api';
 
-@Component
-export default class CreateRole extends Vue {
-  dialog = false;
+const app = useAppStore();
+const errorStore = useErrorStore();
+const formErrors = computed(() => errorStore.formErrors);
 
-  creating = false;
-  name = '';
+const props = defineProps<{ modelValue: boolean }>();
+const emit = defineEmits<{
+  (e: 'update:modelValue', val: boolean): void;
+  (e: 'created', role: Role): void;
+}>();
 
-  get formErrors() {
-    return ErrorModule.formErrors;
-  }
+const newRole = ref('');
 
-  async createRole() {
-    this.creating = true;
+const modelProxy = computed({
+  get: () => props.modelValue,
+  set: (val: boolean) => {
+    emit('update:modelValue', val);
 
-    try {
-      const { data: role } = await createRole(this.name);
-
-      this.dialog = false;
-      this.name = '';
-
-      this.$emit('created', role);
-      this.$snackbar('Role created.', 'success');
-    } catch (err) {
-      //
+    if (!val) {
+      newRole.value = '';
+      errorStore.$reset();
     }
+  },
+});
 
-    this.creating = false;
+const creating = ref(false);
+const submitRole = async () => {
+  creating.value = true;
+
+  try {
+    const { data } = await createRole(newRole.value);
+    emit('created', data);
+    app.notify({ style: 'success', text: 'Role created.' });
+
+    modelProxy.value = false;
+    newRole.value = '';
+  } catch (err) {
+    //
   }
 
-  @Watch('dialog')
-  dialogChanged(dialog: boolean) {
-    if (!dialog) {
-      ErrorModule.RESET();
-    }
-  }
-}
+  creating.value = false;
+};
 </script>

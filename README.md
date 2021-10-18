@@ -8,12 +8,14 @@ Me playing around with modulated laravel.
 - [Laravel Sail](https://laravel.com/docs/8.x/sail) - dockerize laravel
 - [Laravel Permission](https://spatie.be/docs/laravel-permission/v5/introduction) - permissions & roles
 - [Laravel Modules](https://nwidart.com/laravel-modules/v6/introduction) - modules
-- [Vue 2](https://vuejs.org/) - frontend framework
-- [Vuetify](https://vuetifyjs.com/en/) - ui components
-- Typescript
-- Prettier - code formatter
-- ESLint
-- Husky with Commitlint & Stylelint
+- [Vue 3](https://v3.vuejs.org/) - frontend framework
+- [Windi CSS](https://windicss.org/) - css framework
+- [Vite](https://vitejs.dev/) - build tools
+- [pnpm](https://pnpm.io/) - package manager
+- [Typescript](https://www.typescriptlang.org/)
+- [Prettier](https://prettier.io/) - code formatter
+- [ESLint](https://eslint.org/) - code linter
+- [Husky](https://typicode.github.io/husky/#/) with [Commitlint](https://commitlint.js.org/#/) & [Stylelint](https://stylelint.io/)
 
 ## Setup
 
@@ -33,8 +35,8 @@ If you have docker you can run `sail up -d` to start the webserver and other ser
 
 ## TODO
 
-- [ ] Migrate to Vue 3 and custom UI
 - [ ] More documentation on how to do what
+- [ ] Tests (currently learning and deciding what to use)
 
 ## License
 

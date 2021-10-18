@@ -1,93 +1,88 @@
 <template>
-  <v-container>
-    <page-header>Role Management</page-header>
+  <div>
+    <PageHeader>Role Management</PageHeader>
 
-    <v-row>
-      <v-col cols="12" md="4">
-        <role-list class="mb-4" :loading="loading" :roles="roles" @select="selectRole" />
+    <div class="grid gap-4 grid-cols-1 lg:(grid-cols-4)">
+      <!-- Left Column -->
+      <div class="space-y-4">
+        <aside class="bg-white rounded-lg shadow p-4 overflow-hidden lg:col-span-1">
+          <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+            Roles
+          </h3>
 
-        <create-role @created="roleCreated" />
-      </v-col>
+          <RoleList :roles="roles" :selected="selected" @select="selectRole" />
+        </aside>
 
-      <v-col cols="12" md="8">
-        <role-settings
-          v-if="role"
-          :permissions="permissions"
-          :role="role"
-          @deleted="roleDeleted"
-          @updated="roleUpdated"
-        />
+        <Button block @click="createDialog = true">Create Role</Button>
+      </div>
 
-        <v-card v-else>
-          <v-card-title>Role Settings</v-card-title>
+      <!-- Right Column -->
+      <RoleSettings
+        v-if="selected"
+        :permissions="permissions"
+        :role="selected"
+        class="lg:(col-span-3)"
+        @deleted="roleDeleted"
+        @updated="roleUpdated"
+      />
 
-          <v-card-text>
-            <p>Please select a role first.</p>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+      <div v-else class="lg:(col-span-3)">
+        <div class="bg-white rounded-lg shadow overflow-hidden py-6 px-4 sm:p-6 lg:pb-8">
+          <h2 class="font-medium text-lg text-gray-900 leading-6">Role Settings</h2>
+          <p class="mt-2 text-sm text-gray-500">Please select a role first.</p>
+        </div>
+      </div>
+    </div>
+
+    <CreateRole v-model="createDialog" @created="roleCreated" />
+  </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref } from 'vue';
 
-import { createRole, listPermissions, listRoles } from '@/api/roles';
-import { Permission, Role } from '@/types/api';
-
+import { listPermissions, listRoles } from '@/api/roles';
+import Button from '@/components/Form/Button.vue';
 import PageHeader from '@/components/PageHeader.vue';
+import { useAppStore } from '@/store';
+import { Permission, Role } from '@/types/api';
 import CreateRole from './components/CreateRole.vue';
 import RoleList from './components/RoleList.vue';
 import RoleSettings from './components/RoleSettings.vue';
 
-@Component({
-  components: { PageHeader, CreateRole, RoleList, RoleSettings },
-})
-export default class Roles extends Vue {
-  loading = false;
+const permissions = ref<Permission[]>([]);
+const roles = ref<Role[]>([]);
 
-  permissions: Permission[] = [];
-  roles: Role[] = [];
+const app = useAppStore();
+const load = async () => {
+  app.$patch({ loading: true });
 
-  role: Role | null = null;
+  permissions.value = (await listPermissions()).data;
+  roles.value = (await listRoles()).data;
 
-  created() {
-    this.load();
+  app.$patch({ loading: false });
+};
+load();
+
+const selected = ref<Role>();
+const selectRole = (role: Role) => (selected.value = role);
+
+const createDialog = ref(false);
+const roleCreated = (role: Role) => {
+  roles.value.push(role);
+  selected.value = role;
+};
+
+const roleUpdated = (updated: Role) => {
+  const role = roles.value.find((r) => r.id === updated.id);
+  if (role) {
+    role.name = updated.name;
+    role.permissions = updated.permissions;
   }
+};
 
-  async load() {
-    this.loading = true;
-
-    const { data: permissions } = await listPermissions();
-    const { data: roles } = await listRoles();
-
-    this.permissions = permissions;
-    this.roles = roles;
-
-    this.loading = false;
-  }
-
-  selectRole(role: Role) {
-    this.role = { ...role };
-  }
-
-  roleCreated(role: Role) {
-    this.roles.push(role);
-    this.selectRole(role);
-  }
-
-  roleUpdated(updated: Role) {
-    const role = this.roles.find((r) => r.id === updated.id);
-    if (role) {
-      role.name = updated.name;
-      role.permissions = updated.permissions;
-    }
-  }
-
-  roleDeleted(deleted: Role) {
-    this.roles = this.roles.filter((r) => r.id !== deleted.id);
-    this.role = null;
-  }
-}
+const roleDeleted = (deleted: Role) => {
+  roles.value = roles.value.filter((r) => r.id !== deleted.id);
+  selected.value = undefined;
+};
 </script>

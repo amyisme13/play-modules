@@ -59,7 +59,7 @@
         </div>
 
         <div class="bg-gray-50 text-right py-3 px-4 sm:px-6">
-          <Button :loading="submitting" type="submit">Save</Button>
+          <Button :disabled="submitting" type="submit">Save</Button>
         </div>
       </div>
     </form>

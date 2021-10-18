@@ -19,7 +19,9 @@ class RoleController extends Controller
     {
         $this->authorize('viewAny', Role::class);
 
-        $roles = Role::with('permissions')->get();
+        $roles = Role::with('permissions')
+            ->orderBy('created_at')
+            ->get();
 
         return RoleResource::collection($roles);
     }

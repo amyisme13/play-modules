@@ -9,7 +9,7 @@
         <section v-if="user" aria-labelledby="profile-overview-title">
           <div class="bg-white rounded-lg shadow overflow-hidden">
             <h2 id="profile-overview-title" class="sr-only">Profile Overview</h2>
-            <div class="bg-white p-6">
+            <div class="p-6">
               <div class="sm:(flex items-center justify-between)">
                 <div class="sm:(flex space-x-5)">
                   <div class="flex-shrink-0">

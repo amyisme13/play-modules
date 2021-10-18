@@ -2,29 +2,32 @@
   <div>
     <PageHeader>Account Settings</PageHeader>
 
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-      <div class="divide-y divide-gray-200 lg:(grid grid-cols-4 divide-y-0 divide-x)">
-        <TabGroup vertical as="template">
-          <aside class="py-6 lg:col-span-1">
+    <div class="grid gap-4 grid-cols-1 lg:(grid-cols-4)">
+      <TabGroup vertical as="template">
+        <!-- Left Column -->
+        <div>
+          <aside class="bg-white rounded-lg shadow p-4 overflow-hidden lg:col-span-1">
+            <h3 class="font-semibold text-xs mb-2 tracking-wider px-3 text-gray-500 uppercase">
+              Menu
+            </h3>
+
             <TabList as="nav" class="space-y-1">
               <Tab v-for="item in menus" :key="item.label" v-slot="{ selected }" as="template">
                 <button
                   :aria-current="selected ? 'page' : undefined"
+                  class="rounded-md flex font-medium text-sm w-full py-2 px-3 group items-center"
                   :class="[
                     selected
-                      ? 'bg-primary-50 border-primary-500 text-primary-700 hover:(bg-primary-50 text-primary-700)'
-                      : 'border-transparent text-gray-900 hover:(bg-gray-50 text-gray-900)',
-                    'group border-l-4 px-3 py-2 flex w-full items-center text-sm font-medium',
+                      ? 'bg-primary-50 text-primary-700'
+                      : 'text-gray-600 hover:(bg-gray-50 text-gray-900)',
                   ]"
                 >
                   <component
                     :is="item.icon"
                     aria-hidden="true"
+                    class="flex-shrink-0 h-6 mr-3 -ml-1 w-6"
                     :class="[
-                      selected
-                        ? 'text-primary-500 group-hover:text-primary-500'
-                        : 'text-gray-400 group-hover:text-gray-500',
-                      'flex-shrink-0 -ml-1 mr-3 h-6 w-6',
+                      selected ? 'text-primary-700' : 'text-gray-400 group-hover:text-gray-500',
                     ]"
                   />
 
@@ -33,20 +36,23 @@
               </Tab>
             </TabList>
           </aside>
+        </div>
 
-          <TabPanels as="template">
-            <TabPanel class="lg:col-span-3">
+        <!-- Right Column -->
+        <div class="lg:(col-span-3)">
+          <TabPanels as="div" class="bg-white rounded-lg shadow overflow-hidden">
+            <TabPanel>
               <UpdateProfile />
             </TabPanel>
-            <TabPanel class="lg:col-span-3">
+            <TabPanel>
               <UpdatePassword />
             </TabPanel>
-            <TabPanel class="lg:col-span-3">
+            <TabPanel>
               <TwoFactorAuth />
             </TabPanel>
           </TabPanels>
-        </TabGroup>
-      </div>
+        </div>
+      </TabGroup>
     </div>
   </div>
 </template>

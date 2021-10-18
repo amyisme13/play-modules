@@ -77,16 +77,14 @@
       </div>
     </div>
 
-    <div class="divide-y divide-gray-200">
-      <div class="flex flex-col space-y-2 py-4 px-4 justify-end sm:(px-6 flex-row space-y-0)">
-        <Button color="none" class="w-full justify-center sm:w-auto" @click="loadForm">
-          Cancel
-        </Button>
+    <div class="flex flex-col space-y-2 py-4 px-4 justify-end sm:(px-6 flex-row space-y-0)">
+      <Button color="none" class="w-full justify-center sm:w-auto" @click="loadForm">
+        Cancel
+      </Button>
 
-        <Button :disabled="loading" type="submit" class="w-full justify-center sm:(w-auto ml-5)">
-          Save
-        </Button>
-      </div>
+      <Button :disabled="loading" type="submit" class="w-full justify-center sm:(w-auto ml-5)">
+        Save
+      </Button>
     </div>
   </form>
 </template>
