@@ -24,23 +24,7 @@
         </div>
 
         <div class="flex flex-1 px-2 justify-center lg:(ml-6 justify-end)">
-          <!-- TODO: Search modules -->
-          <div class="max-w-lg w-full lg:max-w-xs">
-            <label for="search" class="sr-only">Search</label>
-            <div class="text-primary-100 relative focus-within:text-gray-400">
-              <div class="flex pl-3 inset-y-0 left-0 pointer-events-none absolute items-center">
-                <i-heroicons-solid-search class="flex-shrink-0 h-5 w-5" aria-hidden="true" />
-              </div>
-
-              <input
-                id="search"
-                name="search"
-                class="bg-white border border-transparent rounded-md bg-opacity-20 w-full py-2 pr-3 pl-10 placeholder-primary-100 leading-5 block sm:text-sm focus:(bg-white border-white outline-none ring-white placeholder-gray-500 text-gray-900)"
-                placeholder="Search"
-                type="search"
-              />
-            </div>
-          </div>
+          <SearchBar class="max-w-lg w-full lg:max-w-xs" />
         </div>
 
         <div class="flex lg:hidden">
@@ -245,6 +229,7 @@ import { useRouter } from 'vue-router';
 
 import AppLink from '@/components/AppLink.vue';
 import { useAuthStore } from '@/store/auth';
+import SearchBar from './SearchBar.vue';
 
 const authStore = useAuthStore();
 const user = computed(() => authStore.user);
