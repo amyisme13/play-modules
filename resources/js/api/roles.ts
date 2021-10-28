@@ -1,9 +1,9 @@
-import { Permission, Role } from '@/types/api';
+import { ListRoleDTO, Permission, Role } from '@/types/api';
 import req from '@/utils/request';
 
 export const listPermissions = () => req.get<Permission[]>('permissions');
 
-export const listRoles = () => req.get<Role[]>('roles');
+export const listRoles = (params?: ListRoleDTO) => req.get<Role[]>('roles', { params });
 
 export const createRole = (name: string) => req.post<Role>('roles', { name });
 

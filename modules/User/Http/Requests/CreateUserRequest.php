@@ -6,6 +6,7 @@ use App\Actions\Fortify\PasswordValidationRules;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class CreateUserRequest extends FormRequest
 {
@@ -29,9 +30,11 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['required', 'email', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users'],
             'name' => ['required', 'string', 'max:255'],
             'password' => $this->passwordRules(),
+            'roles' => ['sometimes', 'array'],
+            'roles.*' => ['sometimes', 'string', Rule::notIn('Super Admin'), 'exists:roles,name'],
         ];
     }
 }

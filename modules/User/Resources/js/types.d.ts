@@ -9,6 +9,7 @@ export interface User {
   avatar: string;
   created_at: string;
   updated_at: string;
+  roles: string[];
 }
 
 export interface ListUserDTO {
@@ -24,8 +25,9 @@ export interface CreateUserDTO {
   email: string;
   password: string;
   password_confirmation: string;
+  roles?: string[];
 }
 
-interface UpdateUserDTO extends Partial<CreateUserDTO> {
+interface UpdateUserDTO extends CreateUserDTO {
   id: number;
 }

@@ -10,6 +10,7 @@ use Modules\User\Http\Requests\CreateUserRequest;
 use Modules\User\Http\Requests\ListUserRequest;
 use Modules\User\Http\Requests\UpdateUserRequest;
 use Modules\User\Transformers\UserResource;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -45,6 +46,11 @@ class UserController extends Controller
 
         $user = User::create($data);
 
+        if ($request->has('roles')) {
+            $this->authorize('viewAny', Role::class);
+            $user->syncRoles($data['roles']);
+        }
+
         return new UserResource($user);
     }
 
@@ -58,6 +64,7 @@ class UserController extends Controller
     {
         $this->authorize('view', $user);
 
+        $user->load('roles');
         return new UserResource($user);
     }
 
@@ -76,6 +83,11 @@ class UserController extends Controller
         }
 
         $user->update($data);
+
+        if ($request->has('roles') && !$user->is_super_admin) {
+            $this->authorize('viewAny', Role::class);
+            $user->syncRoles($data['roles']);
+        }
 
         return new UserResource($user);
     }

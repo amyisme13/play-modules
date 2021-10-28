@@ -13,13 +13,18 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', Role::class);
 
         $roles = Role::with('permissions')
+            ->when(
+                $request->input('withoutSuperAdmin'),
+                fn($q) => $q->where('name', '<>', 'Super Admin')
+            )
             ->orderBy('created_at')
             ->get();
 

@@ -56,6 +56,31 @@
               </div>
             </template>
           </div>
+
+          <fieldset v-if="canManageRoles">
+            <legend class="font-medium text-sm mb-2 text-gray-700">Roles:</legend>
+
+            <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              <div v-for="role in roles" :key="role.name" class="flex relative items-start">
+                <div class="flex h-5 items-center">
+                  <input
+                    :id="`permission-${role.name}`"
+                    v-model="user.roles"
+                    name="permissions"
+                    type="checkbox"
+                    :value="role.name"
+                    class="rounded border-gray-300 h-4 text-primary-600 w-4 focus:ring-primary-500"
+                  />
+                </div>
+
+                <div class="text-sm ml-3">
+                  <label :for="`permission-${role.name}`" class="text-gray-700">
+                    {{ role.name }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
         </div>
 
         <div class="bg-gray-50 text-right py-3 px-4 sm:px-6">
@@ -75,9 +100,12 @@ import Checkbox from '@/components/Form/Checkbox.vue';
 import TextInput from '@/components/Form/TextInput.vue';
 import PageHeader from '@/components/PageHeader.vue';
 import { useAppStore } from '@/store';
+import { useAuthStore } from '@/store/auth';
 import { useErrorStore } from '@/store/error';
 import { show, create, update } from '@user/api/users';
 import { CreateUserDTO, UpdateUserDTO, User } from '@user/types';
+import { Role } from '@/types/api';
+import { listRoles } from '@/api/roles';
 
 const errorStore = useErrorStore();
 const formErrors = computed(() => errorStore.formErrors);
@@ -91,12 +119,38 @@ const loading = computed({
   set: (loading: boolean) => app.$patch({ loading }),
 });
 
+const roles = ref<Role[]>([]);
+
+const loadRoles = async () => {
+  loading.value = true;
+
+  try {
+    const { data } = await listRoles({ withoutSuperAdmin: true });
+    roles.value = data;
+  } catch (err) {
+    //
+  }
+
+  loading.value = false;
+};
+
+const authStore = useAuthStore();
+const canManageRoles = computed(
+  () =>
+    authStore.user?.roles.includes('Super Admin') ||
+    authStore.user?.permissions.includes('Manage permissions')
+);
+if (canManageRoles.value) {
+  loadRoles();
+}
+
 const editedUser = ref<User>();
 const user = ref<CreateUserDTO | UpdateUserDTO>({
   name: '',
   email: '',
   password: '',
   password_confirmation: '',
+  roles: [],
 });
 
 const title = computed(() => {
@@ -143,9 +197,13 @@ const submitting = ref(false);
 const submit = async () => {
   submitting.value = true;
 
-  if (changePassword.value === false) {
+  if (!changePassword.value) {
     user.value.password = '';
     user.value.password_confirmation = '';
+  }
+
+  if (!canManageRoles.value) {
+    user.value.roles = undefined;
   }
 
   try {

@@ -5,6 +5,7 @@ namespace Modules\User\Http\Requests;
 use App\Actions\Fortify\PasswordValidationRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -27,10 +28,14 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->route('user')->id;
+
         return [
-            'email' => ['sometimes', 'email', 'max:255'],
-            'name' => ['sometimes', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', "unique:users,email,{$id}"],
+            'name' => ['required', 'string', 'max:255'],
             'password' => $this->passwordRules(false),
+            'roles' => ['sometimes', 'array'],
+            'roles.*' => ['sometimes', 'string', Rule::notIn('Super Admin'), 'exists:roles,name'],
         ];
     }
 }

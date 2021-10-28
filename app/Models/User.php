@@ -53,4 +53,14 @@ class User extends Authenticatable
     {
         return "https://ui-avatars.com/api/?name={$this->name}";
     }
+
+    /**
+     * Get whether user is super admin.
+     *
+     * @return string
+     */
+    public function getIsSuperAdminAttribute()
+    {
+        return $this->roles->contains('name', 'Super Admin');
+    }
 }
