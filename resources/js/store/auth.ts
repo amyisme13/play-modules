@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 
 import { csrf, login, logout, user, register, login2FA } from '@/api/auth';
 import { LoginDTO, RegisterDTO, TwoFactorDTO, AuthUser } from '@/types/api';
+import { useFeaturesStore } from './features';
 
 interface State {
   authenticated: boolean;
@@ -43,6 +44,8 @@ export const useAuthStore = defineStore('auth', {
     async loadUser() {
       const res = await user();
       this.user = res.data;
+
+      useFeaturesStore().loadMenus();
     },
 
     async logout() {
