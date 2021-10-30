@@ -26,7 +26,7 @@
                   class="border rounded-md flex border-gray-300 py-2 px-3 group relative items-center justify-center hover:bg-gray-50 focus-within:(ring-2 ring-offset-2 ring-primary-500)"
                 >
                   <label
-                    for="user-photo"
+                    for="user-photo-mobile"
                     class="font-medium text-sm text-gray-700 leading-4 relative pointer-events-none"
                   >
                     <span>Change</span>
@@ -34,10 +34,11 @@
                   </label>
 
                   <input
-                    id="user-photo"
+                    id="user-photo-mobile"
                     name="user-photo"
                     type="file"
                     class="rounded-md cursor-pointer h-full border-gray-300 w-full opacity-0 absolute"
+                    @change="onFileChange"
                   />
                 </div>
               </div>
@@ -57,6 +58,7 @@
                 name="user-photo"
                 type="file"
                 class="rounded-md cursor-pointer h-full border-gray-300 w-full opacity-0 inset-0 absolute"
+                @change="onFileChange"
               />
             </label>
           </div>
@@ -108,6 +110,8 @@ const name = ref('');
 const email = ref('');
 const avatar = ref('');
 
+const avatarFile = ref<File>();
+
 const auth = useAuthStore();
 const loadForm = () => {
   if (auth.user) {
@@ -126,6 +130,7 @@ const submit = async () => {
     await updateProfile({
       name: name.value,
       email: email.value,
+      avatar: avatarFile.value,
     });
 
     await auth.loadUser();
@@ -139,5 +144,27 @@ const submit = async () => {
   }
 
   loading.value = false;
+};
+
+const onFileChange = (event: Event) => {
+  const files = (event.target as HTMLInputElement).files;
+  if (!files || files.length === 0) {
+    return;
+  }
+
+  const validTypes = ['image/png', 'image/jpeg'];
+  const file = files[0];
+  if (!validTypes.includes(file.type)) {
+    app.notify({ style: 'error', text: 'Avatar must be a jpg or png file.' });
+    return;
+  }
+
+  avatarFile.value = file;
+
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    avatar.value = reader.result as string;
+  };
+  reader.readAsDataURL(file);
 };
 </script>

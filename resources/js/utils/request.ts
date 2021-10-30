@@ -2,34 +2,7 @@ import axios from 'axios';
 
 import { useErrorStore } from '@/store/error';
 import config from './config';
-
-export function createParams(params: Record<string, any>) {
-  const output: typeof params = {};
-
-  for (const key in params) {
-    const value = params[key];
-    if (typeof value === 'boolean') {
-      output[key] = value ? 1 : 0;
-    } else if (value) {
-      output[key] = value;
-    }
-  }
-
-  return output;
-}
-
-export function createData(data: Record<string, any>) {
-  const output: typeof data = {};
-
-  for (const key in data) {
-    const value = data[key];
-    if (value) {
-      output[key] = value;
-    }
-  }
-
-  return output;
-}
+import { transformData, transformParams } from './transformers';
 
 const req = axios.create({
   baseURL: config.baseApi,
@@ -38,11 +11,19 @@ const req = axios.create({
 
 req.interceptors.request.use((config) => {
   if (config.params) {
-    config.params = createParams(config.params);
+    config.params = transformParams(config.params);
   }
 
   if (config.data && typeof config.data === 'object') {
-    config.data = createData(config.data);
+    config.data = transformData(config.data);
+  }
+
+  // For some reason axios.put with formdata cant be parsed in the server
+  const method = config.method?.toLowerCase() || 'post';
+  const notPost = ['put', 'patch'];
+  if (config.data instanceof FormData && notPost.includes(method)) {
+    config.method = 'post';
+    config.data.append('_method', method);
   }
 
   return config;

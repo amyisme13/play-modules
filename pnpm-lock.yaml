@@ -25,6 +25,7 @@ specifiers:
   laravel-vite: ^0.0.16
   lint-staged: ^11.2.3
   nprogress: ^0.2.0
+  object-to-formdata: ^4.1.0
   pinia: ^2.0.0-rc.14
   prettier: ~2.2.1
   typescript: ^4.4.4
@@ -42,6 +43,7 @@ dependencies:
   axios: 0.21.4
   classnames: 2.3.1
   nprogress: 0.2.0
+  object-to-formdata: 4.1.0
   pinia: 2.0.0-rc.14_typescript@4.4.4+vue@3.2.20
   vue: 3.2.20
   vue-router: 4.0.12_vue@3.2.20
@@ -2167,6 +2169,10 @@ packages:
 
   /nprogress/0.2.0:
     resolution: {integrity: sha1-y480xTIT2JVyP8urkH6UIq28r7E=}
+    dev: false
+
+  /object-to-formdata/4.1.0:
+    resolution: {integrity: sha512-4Ti3VLTspWOUt5QIBl5/BpvLBnr4tbFpZ/FpXKWQFqLslvGIB3ug3jurW/k8iIpoyE6HcZhhmQ6mFiOq1tKGEQ==}
     dev: false
 
   /once/1.4.0:

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasAvatar;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -12,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable;
+    use HasApiTokens, HasAvatar, HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -42,17 +43,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = ['avatar'];
-
-    /**
-     * Get the avatar
-     *
-     * @return string
-     */
-    public function getAvatarAttribute()
-    {
-        return "https://ui-avatars.com/api/?name={$this->name}";
-    }
+    protected $appends = ['avatar_url'];
 
     /**
      * Get whether user is super admin.

@@ -28,7 +28,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
+
+            'avatar' => ['sometimes', 'file', 'mimes:jpg,jpeg,png', 'max:2048'],
         ])->validateWithBag('updateProfileInformation');
+
+        if (isset($input['avatar'])) {
+            $user->updateAvatar($input['avatar']);
+        }
 
         if ($input['email'] !== $user->email && $user instanceof MustVerifyEmail) {
             $this->updateVerifiedUser($user, $input);
