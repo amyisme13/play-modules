@@ -66,21 +66,21 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import AppLink from '@/components/AppLink.vue';
-import { useFeaturesStore } from '@/store/features';
+import { useModulesStore } from '@/store/modules';
 import { AppMenuHeader } from '@/types';
 
 const search = ref('');
 
 const filteredMenus = ref<AppMenuHeader[]>([]);
 
-const featuresStore = useFeaturesStore();
+const modulesStore = useModulesStore();
 const filterMenus = useDebounceFn(() => {
   if (search.value.length === 0) {
     filteredMenus.value = [];
     return;
   }
 
-  filteredMenus.value = featuresStore.menus.reduce((menus, menuHead) => {
+  filteredMenus.value = modulesStore.menus.reduce((menus, menuHead) => {
     const filtered = menuHead.menus.filter((menu) =>
       menu.label.toLowerCase().includes(search.value.toLowerCase())
     );

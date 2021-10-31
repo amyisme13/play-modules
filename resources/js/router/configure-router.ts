@@ -3,7 +3,7 @@ import 'nprogress/nprogress.css';
 import { Router } from 'vue-router';
 
 import { useAuthStore } from '@/store/auth';
-import { useFeaturesStore } from '@/store/features';
+import { useModulesStore } from '@/store/modules';
 import { useErrorStore } from '@/store/error';
 import { errorRoutes } from '.';
 
@@ -14,16 +14,16 @@ export const configure = (router: Router) => {
     NProgress.start();
 
     const auth = useAuthStore();
-    const features = useFeaturesStore();
+    const modules = useModulesStore();
 
     // Load data when not loaded yet.
     if (auth.authenticated && !auth.user) {
       await auth.loadUser();
     }
 
-    if (!features.loaded) {
-      features.fetchFeatures();
-      features.routes.forEach((route) => router.addRoute(route));
+    if (!modules.loaded) {
+      modules.fetchModules();
+      modules.routes.forEach((route) => router.addRoute(route));
       errorRoutes.forEach((route) => router.addRoute(route));
 
       next({ ...to, replace: true });

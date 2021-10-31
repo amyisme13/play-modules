@@ -17,7 +17,7 @@ if (!function_exists('init_data')) {
         return [
             'authenticated' => $authenticated,
             'user' => $authenticated ? new AuthUserResource(Auth::user()) : null,
-            'features' => array_keys(Module::allEnabled()),
+            'modules' => array_keys(Module::allEnabled()),
         ];
     }
 }

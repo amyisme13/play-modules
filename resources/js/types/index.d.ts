@@ -14,7 +14,7 @@ export interface AppMenuHeader {
   menus: AppMenu[];
 }
 
-export interface AppFeature {
+export interface AppModule {
   module?: string;
   name: string;
   icon: typeof Icon;

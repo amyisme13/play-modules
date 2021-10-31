@@ -8,7 +8,7 @@
 import { defineComponent } from 'vue';
 
 import { useAuthStore } from '@/store/auth';
-import { useFeaturesStore } from '@/store/features';
+import { useModulesStore } from '@/store/modules';
 
 export default defineComponent({
   setup() {
@@ -17,14 +17,14 @@ export default defineComponent({
     const init = JSON.parse(initData);
 
     const auth = useAuthStore();
-    const features = useFeaturesStore();
+    const modules = useModulesStore();
 
     auth.$patch({
       authenticated: init.authenticated || false,
       user: init.user || null,
     });
 
-    features.active = init.features || [];
+    modules.active = init.modules || [];
 
     return {};
   },

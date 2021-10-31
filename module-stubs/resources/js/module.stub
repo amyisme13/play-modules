@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
-import type { AppFeature } from '@/types';
+import type { AppModule } from '@/types';
 
-const feature: AppFeature = {
+const module: AppModule = {
   name: '$STUDLY_NAME$',
   icon: 'mdi-view-dashboard',
   routes: [
@@ -27,4 +27,4 @@ const feature: AppFeature = {
   ],
 };
 
-export default feature;
+export default module;

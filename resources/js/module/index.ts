@@ -1,5 +1,5 @@
 import { markRaw } from 'vue';
-import { AppFeature } from '@/types';
+import { AppModule } from '@/types';
 
 import routes from './routes';
 
@@ -7,7 +7,7 @@ import HeartIcon from '~icons/heroicons-outline/heart';
 import HomeIcon from '~icons/heroicons-outline/home';
 import TagIcon from '~icons/heroicons-outline/tag';
 
-const feature: AppFeature = {
+const module: AppModule = {
   name: 'Core',
   icon: markRaw(HeartIcon),
   routes,
@@ -26,4 +26,4 @@ const feature: AppFeature = {
   ],
 };
 
-export default feature;
+export default module;

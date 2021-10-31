@@ -1,11 +1,11 @@
 import { markRaw } from 'vue';
 
 import AppLayout from '@/layouts/AppLayout.vue';
-import type { AppFeature } from '@/types';
+import type { AppModule } from '@/types';
 
 import GroupIcon from '~icons/heroicons-solid/user-group';
 
-const feature: AppFeature = {
+const module: AppModule = {
   name: 'User',
   icon: markRaw(GroupIcon),
   routes: [
@@ -37,4 +37,4 @@ const feature: AppFeature = {
   ],
 };
 
-export default feature;
+export default module;

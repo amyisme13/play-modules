@@ -23,9 +23,9 @@
 import { computed } from 'vue';
 
 import PageHeader from '@/components/PageHeader.vue';
-import { useFeaturesStore } from '@/store/features';
+import { useModulesStore } from '@/store/modules';
 import ModuleItem from '@/components/Module/ModuleItem.vue';
 
-const featuresStore = useFeaturesStore();
-const menus = computed(() => featuresStore.menus);
+const modulesStore = useModulesStore();
+const menus = computed(() => modulesStore.menus);
 </script>

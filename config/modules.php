@@ -32,7 +32,7 @@ return [
             'scaffold/config' => 'Config/config.php',
             'composer' => 'composer.json',
             'resources/js/views/Index' => 'Resources/js/views/Index.vue',
-            'resources/js/feature' => 'Resources/js/feature/index.ts',
+            'resources/js/module' => 'Resources/js/module/index.ts',
             'auth-provider' => 'Providers/AuthServiceProvider.php',
         ],
         'replacements' => [
@@ -41,7 +41,7 @@ return [
             'json' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'PROVIDER_NAMESPACE'],
             'scaffold/config' => ['STUDLY_NAME'],
             'resources/js/views/Index' => ['STUDLY_NAME', 'LOWER_NAME'],
-            'resources/js/feature' => ['STUDLY_NAME', 'LOWER_NAME'],
+            'resources/js/module' => ['STUDLY_NAME', 'LOWER_NAME'],
             'composer' => [
                 'LOWER_NAME',
                 'STUDLY_NAME',

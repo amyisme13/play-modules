@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { RouteRecordRaw } from 'vue-router';
 
-import coreFeature from '@/feature';
-import { AppFeature, AppMenu, AppMenuHeader } from '@/types';
+import coreModule from '@/module';
+import { AppModule, AppMenu, AppMenuHeader } from '@/types';
 import { AuthUser } from '@/types/api';
 import { useAuthStore } from './auth';
 
@@ -25,37 +25,37 @@ function filterMenus(user: AuthUser | null, menus: AppMenu[]) {
 interface State {
   loaded: boolean;
   active: string[];
-  features: AppFeature[];
+  modules: AppModule[];
   routes: RouteRecordRaw[];
   menus: AppMenuHeader[];
 }
 
-export const useFeaturesStore = defineStore('features', {
+export const useModulesStore = defineStore('modules', {
   state: (): State => ({
     loaded: false,
     active: [],
-    features: [],
+    modules: [],
     routes: [],
     menus: [],
   }),
 
   actions: {
-    fetchFeatures() {
-      const modules = import.meta.globEager('../../../modules/**/feature/index.ts');
+    fetchModules() {
+      const imports = import.meta.globEager('../../../modules/**/module/index.ts');
 
-      const nonCoreFeatures: AppFeature[] = Object.values(modules).map((module) => module.default);
-      const activeFeatures = nonCoreFeatures.filter((feat) =>
+      const nonCoreModules: AppModule[] = Object.values(imports).map((i) => i.default);
+      const activeModules = nonCoreModules.filter((feat) =>
         this.active.includes(feat.module || feat.name)
       );
 
-      const features = [coreFeature, ...activeFeatures];
+      const modules = [coreModule, ...activeModules];
 
-      const routes = features.reduce(
-        (acc, feature) => acc.concat(feature.routes),
+      const routes = modules.reduce(
+        (acc, module) => acc.concat(module.routes),
         [] as RouteRecordRaw[]
       );
 
-      this.features = features;
+      this.modules = modules;
       this.routes = routes;
       this.loadMenus();
 
@@ -65,10 +65,10 @@ export const useFeaturesStore = defineStore('features', {
     loadMenus() {
       const authStore = useAuthStore();
 
-      const menus = this.features.reduce((acc, feature) => {
-        const filtered = filterMenus(authStore.user, feature.menus);
+      const menus = this.modules.reduce((acc, module) => {
+        const filtered = filterMenus(authStore.user, module.menus);
         if (filtered.length > 0) {
-          acc.push({ label: feature.name, icon: feature.icon, menus: filtered });
+          acc.push({ label: module.name, icon: module.icon, menus: filtered });
         }
 
         return acc;

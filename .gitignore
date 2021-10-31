@@ -28,3 +28,6 @@ public/js
 public/mix-manifest.json
 public/views
 public/vendors~views
+
+# nwidart/laravel-modules
+modules_statuses.json
