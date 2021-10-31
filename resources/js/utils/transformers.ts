@@ -5,11 +5,13 @@ function prepareJson(data: Record<string, any>, opts = { transformBoolean: false
 
   for (const key in data) {
     const value = data[key];
+    const isNullish = value === null || value === undefined || value === '';
+
     if (typeof value === 'object' && value !== null) {
       output[key] = prepareJson(value, opts);
     } else if (typeof value === 'boolean' && opts.transformBoolean) {
       output[key] = value ? 1 : 0;
-    } else if (value || value === 0) {
+    } else if (!isNullish) {
       output[key] = value;
     }
   }

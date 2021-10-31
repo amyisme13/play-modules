@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CurrentUser;
+use App\Http\Controllers\Api\ModuleController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RoleController;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('permissions', PermissionController::class)->only(['index']);
 
     Route::apiResource('roles', RoleController::class);
+
+    Route::apiResource('modules', ModuleController::class)->only(['index', 'store']);
 });

@@ -79,6 +79,15 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
+        path: 'modules/manage',
+        name: 'module-management',
+        component: () => import('../views/ModuleManagement.vue'),
+        meta: {
+          requireAuth: true,
+          noOverlapHeader: true,
+        },
+      },
+      {
         path: 'roles',
         name: 'role-management',
         component: () => import('../views/Roles/Index.vue'),

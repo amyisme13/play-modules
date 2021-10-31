@@ -3,28 +3,24 @@ import { RouteRecordRaw } from 'vue-router';
 
 import coreModule from '@/module';
 import { AppModule, AppMenu, AppMenuHeader } from '@/types';
-import { AuthUser } from '@/types/api';
 import { useAuthStore } from './auth';
 
-function filterMenus(user: AuthUser | null, menus: AppMenu[]) {
-  if (user?.roles.includes('Super Admin')) {
+function filterMenus(userPermissions: string[] | true, menus: AppMenu[]) {
+  if (userPermissions === true) {
     return menus;
   }
 
-  const userPermissions = user?.permissions || [];
-
-  return menus.filter((menu) => {
-    if (!menu.permissions) {
-      return true;
-    }
-
-    return menu.permissions.every((permission) => userPermissions.includes(permission));
-  });
+  return menus.filter(
+    (menu) =>
+      !menu.permissions ||
+      menu.permissions.every((permission) => userPermissions.includes(permission))
+  );
 }
 
 interface State {
   loaded: boolean;
   active: string[];
+  allModules: AppModule[];
   modules: AppModule[];
   routes: RouteRecordRaw[];
   menus: AppMenuHeader[];
@@ -34,6 +30,7 @@ export const useModulesStore = defineStore('modules', {
   state: (): State => ({
     loaded: false,
     active: [],
+    allModules: [],
     modules: [],
     routes: [],
     menus: [],
@@ -55,6 +52,7 @@ export const useModulesStore = defineStore('modules', {
         [] as RouteRecordRaw[]
       );
 
+      this.allModules = nonCoreModules;
       this.modules = modules;
       this.routes = routes;
       this.loadMenus();
@@ -64,9 +62,11 @@ export const useModulesStore = defineStore('modules', {
 
     loadMenus() {
       const authStore = useAuthStore();
+      const userPermissions = authStore.isSuperAdmin || authStore.user?.permissions || [];
 
       const menus = this.modules.reduce((acc, module) => {
-        const filtered = filterMenus(authStore.user, module.menus);
+        const filtered = filterMenus(userPermissions, module.menus);
+
         if (filtered.length > 0) {
           acc.push({ label: module.name, icon: module.icon, menus: filtered });
         }

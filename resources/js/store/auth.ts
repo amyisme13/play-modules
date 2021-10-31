@@ -15,6 +15,12 @@ export const useAuthStore = defineStore('auth', {
     user: null,
   }),
 
+  getters: {
+    isSuperAdmin(state) {
+      return state.user && state.user.roles.includes('Super Admin');
+    },
+  },
+
   actions: {
     async login(credentials: LoginDTO) {
       await csrf();

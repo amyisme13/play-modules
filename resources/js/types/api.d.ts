@@ -90,3 +90,14 @@ export interface Role {
 export interface ListRoleDTO {
   withoutSuperAdmin?: boolean;
 }
+
+/**
+ * Modules
+ */
+
+export interface UpdateModuleDTO {
+  modules: Array<{
+    name: string;
+    enabled: boolean;
+  }>;
+}
