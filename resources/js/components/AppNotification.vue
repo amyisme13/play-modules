@@ -16,7 +16,7 @@
         <div
           v-for="(item, i) in notifications"
           :key="item.id"
-          class="bg-white rounded-lg max-w-sm shadow-lg ring-black w-full ring-1 ring-opacity-5 pointer-events-auto overflow-hidden"
+          class="bg-white rounded-lg max-w-sm shadow-lg ring-black w-full ring-1 ring-opacity-5 z-30 pointer-events-auto overflow-hidden"
         >
           <div class="p-4">
             <div class="flex items-start">

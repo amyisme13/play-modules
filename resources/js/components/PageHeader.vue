@@ -5,9 +5,13 @@
         <i-heroicons-solid-arrow-left class="h-8 w-8 text-white mr-2" />
       </AppLink>
 
+      <slot name="prepend"></slot>
+
       <h1 class="text-3xl font-bold text-white">
         <slot></slot>
       </h1>
+
+      <slot name="append"></slot>
     </div>
   </header>
 </template>

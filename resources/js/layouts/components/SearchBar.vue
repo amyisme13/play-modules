@@ -12,13 +12,20 @@
           ref="searchBar"
           v-model="search"
           name="searchBar"
-          class="bg-white border border-transparent rounded-md bg-opacity-20 w-full py-2 pr-3 pl-10 placeholder-primary-100 leading-5 block sm:text-sm focus:(bg-white border-white outline-none ring-white placeholder-gray-500 text-gray-900)"
+          class="bg-white border border-transparent rounded-md bg-opacity-20 w-full py-2 px-10 placeholder-primary-100 leading-5 block sm:text-sm focus:(bg-white border-white outline-none ring-white placeholder-gray-500 text-gray-900)"
           placeholder="Search modules..."
           type="text"
           @blur="onSearchBlur"
           @input="filterMenus"
           @keydown="onSearchKeydown"
         />
+
+        <div
+          v-show="filtering"
+          class="flex pr-3 inset-y-0 right-0 pointer-events-none absolute items-center"
+        >
+          <i-mdi-loading class="flex-shrink-0 h-5 animate-spin w-5" aria-hidden="true" />
+        </div>
       </div>
     </div>
 
@@ -35,10 +42,10 @@
       class="bg-white rounded-md shadow-lg ring-black mt-2 w-full py-2 origin-top-right right-0 ring-1 ring-opacity-5 z-10 absolute focus:outline-none"
       @keydown="onMenuKeydown"
     >
-      <div v-for="menuHead in filteredMenus" :key="menuHead.label">
+      <div v-for="(menuHead, i) in filteredMenus" :key="i">
         <p class="font-medium text-sm px-4 text-gray-500">{{ menuHead.label }}</p>
 
-        <MenuItem v-for="menu in menuHead.menus" :key="menu.routeName" v-slot="{ active }">
+        <MenuItem v-for="(menu, j) in menuHead.menus" :key="j" v-slot="{ active }">
           <AppLink
             :to="{ name: menu.routeName }"
             :class="[
@@ -70,11 +77,13 @@ import { useModulesStore } from '@/store/modules';
 import { AppMenuHeader } from '@/types';
 
 const search = ref('');
+const filtering = ref(false);
 
 const filteredMenus = ref<AppMenuHeader[]>([]);
 
 const modulesStore = useModulesStore();
-const filterMenus = useDebounceFn(() => {
+const doFilter = useDebounceFn(() => {
+  filtering.value = false;
   if (search.value.length === 0) {
     filteredMenus.value = [];
     return;
@@ -92,6 +101,11 @@ const filterMenus = useDebounceFn(() => {
     return menus;
   }, [] as AppMenuHeader[]);
 }, 300);
+
+const filterMenus = () => {
+  filtering.value = true;
+  doFilter();
+};
 
 const searchBar = ref<HTMLInputElement>();
 const onMenuKeydown = (e: KeyboardEvent) => {

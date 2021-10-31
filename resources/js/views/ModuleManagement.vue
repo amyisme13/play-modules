@@ -1,8 +1,15 @@
 <template>
   <div>
-    <PageHeader>Module Management</PageHeader>
+    <PageHeader>
+      Module Management
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <template #append>
+        <div class="flex-grow"></div>
+        <i-mdi-loading v-show="saving" aria-hidden="true" class="h-8 text-white animate-spin w-8" />
+      </template>
+    </PageHeader>
+
+    <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       <SwitchGroup
         v-for="item in modules"
         :key="item.name"
@@ -90,17 +97,27 @@ const load = async () => {
 };
 load();
 
-const save = useDebounceFn(async () => {
+const saving = ref(false);
+
+const doSave = useDebounceFn(async () => {
   try {
     const { data } = await saveModules({ modules: modules.value });
     active.value = data;
 
     modulesStore.$patch({ active: data, loaded: false });
+    modulesStore.fetchModules();
 
     app.notify({ style: 'success', text: 'Modules saved.' });
   } catch (err) {
     app.notify({ style: 'error', text: 'Error while saving modules. Please try again.' });
     reloadModules();
   }
+
+  saving.value = false;
 }, 3000);
+
+const save = () => {
+  saving.value = true;
+  doSave();
+};
 </script>
