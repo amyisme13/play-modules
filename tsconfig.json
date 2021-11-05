@@ -13,8 +13,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["resources/js/*"],
-      // Currently we have to manually map the modules.
-      // Dont forget to add it in webpack.mix.js as well.
       "@user/*": ["modules/User/Resources/js/*"]
     },
     "types": ["@types/node", "vite/client", "unplugin-icons/types/vue"]

@@ -22,6 +22,7 @@
     "@vue/compiler-sfc": "^3.2.20",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
+    "alias-hq": "^5.2.1",
     "eslint": "^7.32.0",
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-vue": "^7.20.0",

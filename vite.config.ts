@@ -1,6 +1,6 @@
 import Vue from '@vitejs/plugin-vue';
+import hq from 'alias-hq';
 import { defineConfig } from 'laravel-vite';
-import path from 'path';
 import IconsResolver from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
 import Components from 'unplugin-vue-components/vite';
@@ -8,10 +8,7 @@ import WindiCSS from 'vite-plugin-windicss';
 
 export default defineConfig({
   resolve: {
-    alias: {
-      '@/': `${path.resolve(__dirname, 'resources/js')}/`,
-      '@user/': `${path.resolve(__dirname, 'modules/User/Resources/js')}/`,
-    },
+    alias: hq.get('rollup'),
   },
 }).withPlugins(
   Vue(),
